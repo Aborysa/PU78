@@ -9,6 +9,8 @@ import moment from 'moment';
 
 BigCalendar.momentLocalizer(moment);
 
+moment.locale('nb');
+
 require('style!css!react-big-calendar/lib/css/react-big-calendar.css')
 
 
