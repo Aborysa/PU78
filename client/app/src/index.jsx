@@ -6,10 +6,10 @@ import moment from 'moment';
 
 //let dateformat = moment();
 //BigCalendar.momentLocalizer(dateformat.format("no"));
+moment.locale('nb');
 
 BigCalendar.momentLocalizer(moment);
 
-moment.locale('nb');
 
 require('style!css!react-big-calendar/lib/css/react-big-calendar.css')
 
