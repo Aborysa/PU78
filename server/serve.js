@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('./src/app.js');
 var debug = require('debug')('bzrestapi:server');
 var http = require('http');
 
