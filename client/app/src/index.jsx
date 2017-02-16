@@ -1,15 +1,20 @@
 
 import React from "react";
 import { render } from "react-dom";
+import moment from 'moment'
+import BigCalendar from 'react-big-calendar'
 
+BigCalendar.momentLocalizer(moment)
+
+require('style!css!react-big-calendar/lib/css/react-big-calendar.css')
 
 class App extends React.Component{
+  constructor() {
+    super()
+  }
   render() {
     return (
-      <div>
-        <h1>Hello World!</h1>
-        <span>Project Utvikling 2017</span>
-      </div>
+      <BigCalendar style={{height: '420px'}} events={[]} />
     )
   }
 }
