@@ -6,6 +6,8 @@ import BigCalendar from 'react-big-calendar'
 
 BigCalendar.momentLocalizer(moment)
 
+moment.locale('nb');
+
 require('style!css!react-big-calendar/lib/css/react-big-calendar.css')
 
 class App extends React.Component{
