@@ -28,7 +28,7 @@ var config = {
     root: [
       SRC_DIR
     ]
-  },  
+  },
   devServer: {
     historyApiFallback: {
       index: '/app/'
