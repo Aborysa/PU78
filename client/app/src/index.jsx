@@ -1,6 +1,7 @@
 
 import React from "react";
 import { render } from "react-dom";
+
 import {LoginView} from './login.jsx';
 import {CalendarView} from './calendar.jsx';
 import {NavBar} from './navBar.jsx';
@@ -9,6 +10,9 @@ import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 're
 class App extends React.Component{
   constructor() {
     super();
+  }
+  onComponentDidMount(){
+    eventService.getEvents
   }
   render() {
     return (
