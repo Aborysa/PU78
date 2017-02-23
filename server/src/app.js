@@ -43,7 +43,12 @@ app.use(function(err, req, res, next) {
   console.log(err);
   // render the error page
   res.status(err.status || 500);
-  res.send(err);
+  if(err.status == 404){
+    res.sendFile(path.resolve("public/404.html"));
+  }else{
+    res.send(err);
+  }
+
 });
 
 module.exports = app;
