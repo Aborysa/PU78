@@ -1,5 +1,4 @@
 import React from "react";
-import {Col} from "react-bootstrap"
 
 
 export class NotFound extends React.Component{
