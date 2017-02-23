@@ -7,12 +7,17 @@ import {CalendarView} from './calendar.jsx';
 import {NavBar} from './navBar.jsx';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
 
+import { userService } from 'services/user/user.service.js';
+
+
 class App extends React.Component{
   constructor() {
     super();
   }
   onComponentDidMount(){
-    eventService.getEvents
+    userService.getUser().subscribe(user => {
+      console.log("1234");
+    });
   }
   render() {
     return (

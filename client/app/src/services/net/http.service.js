@@ -119,7 +119,7 @@ export class HttpServiceProvider {
       pUrl += HttpServiceProvider.urlEncode(params);
     }
     // Create request
-    const request = new Request(pUrl, { method: 'get' });
+    const request = new Request(pUrl, { method: 'get',credentials: "same-origin" });
     return this.request(request);
   }
 
@@ -155,7 +155,8 @@ export class HttpServiceProvider {
     const request = new Request(pUrl, {
       method: 'POST',
       body: pBody,
-      headers,
+      headers: headers,
+      credentials: "same-origin"
     });
     return this.request(request);
   }

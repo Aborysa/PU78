@@ -13,7 +13,7 @@ export class NavBar extends React.Component{
           <Navbar.Header>
             <Navbar.Brand>
               <a href="/">
-                  <img src="app/assets/images/StudynatorLogo.png" height="200%"/>
+                  <img src="assets/images/StudynatorLogo.png" height="200%"/>
               </a>
             </Navbar.Brand>
             <Navbar.Toggle />

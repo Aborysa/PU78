@@ -6,7 +6,7 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let passport = require('passport');
 let nconf = require('nconf');
-let feide = require('./feide.js');
+let api = require('./api/index.js');
 
 
 
@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 
 
-app.use(feide);
+app.use(api.base);
 app.use(express.static(path.join(__dirname, '../public')));
 
 
