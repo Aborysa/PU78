@@ -1,22 +1,11 @@
 
 import React from "react";
 import { render } from "react-dom";
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
 
-import { eventService } from '/services/event/event.service.js';
-
-//let dateformat = moment();
-//BigCalendar.momentLocalizer(dateformat.format("no"));
-moment.locale('nb');
-
-BigCalendar.momentLocalizer(moment);
-
-
-require('style!css!react-big-calendar/lib/css/react-big-calendar.css')
-
-
-
+import {LoginView} from './login.jsx';
+import {CalendarView} from './calendar.jsx';
+import {NavBar} from './navBar.jsx';
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
 
 class App extends React.Component{
   constructor() {
@@ -27,7 +16,13 @@ class App extends React.Component{
   }
   render() {
     return (
-      <BigCalendar style={{height: '420px'}} events={[]} />
+      <div>
+        <NavBar />
+        <Router history={browserHistory}>
+          <Route path='/' component={LoginView} />
+          <Route path='/home' component={CalendarView} />
+        </Router>
+      </div>
     )
   }
 }
