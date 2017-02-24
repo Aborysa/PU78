@@ -52,7 +52,7 @@ feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"cal
 });
 
 feideAPI.get('/user', (req, res) => {
-  res.json(req.user);
+  res.json(req.user || {});
 });
 
 feideAPI.get('/logout',(req,res) => {

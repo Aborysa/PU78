@@ -1,2 +1,2 @@
-export {event} from 'event.js';
-export {eventService} from 'event.service.js';
+export {Event} from './event';
+export {eventService} from './event.service';

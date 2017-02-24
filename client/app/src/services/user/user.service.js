@@ -13,7 +13,7 @@ export class UserServiceProvider{
   refresh(){
     http.get(`${API_BASE}${API_USER}`).subscribe((data)=>{
       let u;
-      if(data){
+      if(data && data.data){
         u = new User(data.token.id_token,"",data.data.name);
       }
       this.userSubject.next(u);
