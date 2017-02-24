@@ -1,9 +1,9 @@
 import React from "react";
+import ReactDOM from 'react-dom';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
-import {Datetime} from 'react-datetime'
-
+import Datetime from 'react-datetime';
 import { eventService,Event } from 'services/event';
 
 moment.locale('nb');
@@ -12,7 +12,6 @@ BigCalendar.momentLocalizer(moment);
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
 
 require('style!css!react-big-calendar/lib/css/react-big-calendar.css');
-require('style!css!react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css');
 
 export class CalendarView extends React.Component{
   constructor(props) {
@@ -75,6 +74,8 @@ class AddEventModal extends React.Component{
   constructor(props){
     super(props);
     this.state = this.getInitialState();
+    this.pstart = new Date();
+    this.pend = new Date();
   }
   getInitialState() {
     return { showModal: false };
@@ -83,20 +84,29 @@ class AddEventModal extends React.Component{
   close() {
     this.setState({ showModal: false });
   }
-
+  set start(v){
+    this.pstart = v;
+  }
+  set end(v){
+    this.pend = v;
+  }
   open() {
     this.setState({ showModal: true });
   }
   saveClick(e){
-    console.log(e);
+    let title = ReactDOM.findDOMNode(this.refs.title).value;
+    let desc = ReactDOM.findDOMNode(this.refs.desc).value;
+    let start = this.pstart.toDate();
+    let end = this.pend.toDate();
+    eventService.pushEvent(new Event(-1,title,start,end,desc,true));
   }
   render() {
 
     return (
       <div>
-        <Button bsStyle="primary" bsSize="small" onClick={this.open} className="pull-right">Legg til en hendelse</Button>
+        <Button bsStyle="primary" bsSize="small" onClick={() => this.open()} className="pull-right">Legg til en hendelse</Button>
 
-        <Modal show={this.state.showModal} onHide={this.close}>
+        <Modal show={this.state.showModal} onHide={() => this.close()}>
           <Modal.Header closeButton>
             <Modal.Title>Ny hendelse</Modal.Title>
           </Modal.Header>
@@ -107,7 +117,7 @@ class AddEventModal extends React.Component{
                   Tittel
                 </Col>
                 <Col sm={10}>
-                  <FormControl id="Title" type="text" placeholder="Tittel" />
+                  <FormControl ref="title" type="text" placeholder="Tittel" />
                 </Col>
               </FormGroup>
               <FormGroup controlId="formHorizontalDescription">
@@ -115,7 +125,7 @@ class AddEventModal extends React.Component{
                   Beskrivelse
                 </Col>
                 <Col sm={10}>
-                  <FormControl id="Decsription" componentClass="textarea" placeholder="Beskrivelse" maxLength="140"/>
+                  <FormControl ref="desc" componentClass="textarea" placeholder="Beskrivelse" maxLength="140"/>
                 </Col>
               </FormGroup>
               <FormGroup controlId="formHorizontalStartDate">
@@ -124,10 +134,7 @@ class AddEventModal extends React.Component{
                 </Col>
                 <Col sm={10}>
                   <Col sm={6}>
-                    <Datetime id="StartDate"  placeholder="Dato"/>
-                  </Col>
-                  <Col sm={6}>
-                    <Datetime id="StartTime" placeholder="Starttidspunkt"/>
+                    <Datetime onChange={(v) => this.start = v} ref="start" />
                   </Col>
                 </Col>
               </FormGroup>
@@ -137,18 +144,15 @@ class AddEventModal extends React.Component{
                 </Col>
                 <Col sm={10}>
                   <Col sm={6}>
-                    <Datetime id="EndDate" placeholder="Dato"/>
-                  </Col>
-                  <Col sm={6}>
-                    <Datetime id="EndTime" placeholder="Sluttidspunkt"/>
+                    <Datetime onChange={(v) => this.end = v} ref="end" />
                   </Col>
                 </Col>
               </FormGroup>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <saveEventButton onClick={(e) => this.saveClick(e)} name="Lagre"/>
-            <Button onClick={this.close} bsStyle="primary">Close</Button>
+            <Button onClick={() => this.saveClick()} bsStyle="success">Save</Button>
+            <Button onClick={() => this.close()} bsStyle="primary">Close</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -161,7 +165,7 @@ class saveEventButton extends React.Component {
   render() {
     // This syntax ensures `this` is bound within handleClick
     return (
-      <Button bsStyle="success" onClick={(e) => this.props.onClick(e)}>
+      <Button bsStyle="success" onClick={() => this.props.onClick()}>
         {this.props.name}
       </Button>
     );
