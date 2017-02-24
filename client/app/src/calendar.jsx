@@ -1,7 +1,7 @@
 import React from "react";
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import {Col, ButtonGroup, Button} from 'react-bootstrap';
+import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 
 moment.locale('nb');
 BigCalendar.momentLocalizer(moment);
@@ -32,7 +32,11 @@ export class CalendarView extends React.Component{
     return (
       <div>
         <Col xs={12} md={10} mdOffset={1}>
-          <BigCalendar style={{height: '600px'}} events={myEvents} views={['month', 'week', 'day']} defaultView={'week'} scrollToTime={starttime} />
+          <BigCalendar style={{height: '420px'}} events={myEvents} views={['month', 'week', 'day']} defaultView={'week'} scrollToTime={starttime} />
+          <AddEventModal/>
+        </Col>
+        <Col xs={12} md={10} mdOffset={1}>
+          <hr className="sepCals"/>
         </Col>
         <Col xs={12} md={10} mdOffset={1}>
           <ButtonGroup bsSize="small">
@@ -48,3 +52,73 @@ export class CalendarView extends React.Component{
     )
   }
 }
+
+const AddEventModal = React.createClass({
+  getInitialState() {
+    return { showModal: false };
+  },
+
+  close() {
+    this.setState({ showModal: false });
+  },
+
+  open() {
+    this.setState({ showModal: true });
+  },
+
+  render() {
+    const popover = (
+      <Popover id="modal-popover" title="popover">
+        very popover. such engagement
+      </Popover>
+    );
+    const tooltip = (
+      <Tooltip id="modal-tooltip">
+        wow.
+      </Tooltip>
+    );
+
+    return (
+      <div>
+        <Button bsStyle="primary" bsSize="small" onClick={this.open} className="pull-right">Legg til en hendelse</Button>
+
+        <Modal show={this.state.showModal} onHide={this.close}>
+          <Modal.Header closeButton>
+            <Modal.Title>Ny hendelse</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form horizontal>
+              <FormGroup controlId="formHorizontalTitle">
+                <Col componentClass={ControlLabel} sm={2}>
+                  Tittel
+                </Col>
+                <Col sm={10}>
+                  <FormControl type="text" placeholder="Tittel" />
+                </Col>
+              </FormGroup>
+
+              <FormGroup controlId="formHorizontalDescription">
+                <Col componentClass={ControlLabel} sm={2}>
+                  Beskrivelse
+                </Col>
+                <Col sm={10}>
+                  <FormControl componentClass="textarea" placeholder="Beskrivelse" maxLength="140"/>
+                </Col>
+              </FormGroup>
+              <FormGroup>
+                <Col smOffset={2} sm={10}>
+                  <Button bsStyle="Success">
+                    Lagre
+                  </Button>
+                </Col>
+              </FormGroup>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.close} bsStyle="primary">Close</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+});

@@ -1,12 +1,10 @@
 import { Observable, Subject } from 'rxjs';
 
-import { API_BASE } from 'common/constants';
-
 //not currently used
 const CLIENT_SECRET = "XXX";
 const CLIENT_ID = "XXX";
 const API_AUTH = "XXX";
-
+const API_BASE = "";
 
 export class HttpServiceProvider {
 

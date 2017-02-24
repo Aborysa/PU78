@@ -28,6 +28,9 @@ class App extends React.Component{
       }))
     });
   }
+  onComponentDidMount(){
+    eventService.getEvents
+  }
   render() {
     return (
       <div>

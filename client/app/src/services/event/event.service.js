@@ -16,9 +16,8 @@ export class EventServiceProvider{
 
   pushEvent(event){
     this.events.push(event);
-    this.eventSubject.next(this.events);
+    this.eventSubject.next(this.events);  
   }
-
 
 }
 
