@@ -8,11 +8,11 @@ export class NavBar extends React.Component{
     super(props);
   }
   render() {
-    let userNav = this.props.currentUser ? 
+    let userNav = this.props.currentUser ?
       <Navbar.Text pullRight>
         {this.props.currentUser.fullname}
         <a href="/api/v1/logout"><Glyphicon glyph="log-out" /></a>
-      </Navbar.Text> : 
+      </Navbar.Text> :
       <Navbar.Form pullRight>
         <Button href="/api/v1/login"><Glyphicon glyph="user" /> Logg inn</Button>
       </Navbar.Form>
@@ -23,7 +23,7 @@ export class NavBar extends React.Component{
           <Navbar.Header>
             <Navbar.Brand>
               <a href="/">
-                <img src="assets/images/StudynatorLogo.png" height="200%"/> 
+                <img src="assets/images/logo.png" height="200%"/>
               </a>
             </Navbar.Brand>
             <Navbar.Toggle />
