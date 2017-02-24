@@ -1,6 +1,6 @@
 import React from "react";
 import {Col, Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button, Glyphicon} from "react-bootstrap";
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 
 
 export class NavBar extends React.Component{
@@ -8,6 +8,15 @@ export class NavBar extends React.Component{
     super(props);
   }
   render() {
+    let userNav = this.props.currentUser ? 
+      <Navbar.Text pullRight>
+        {this.props.currentUser.fullname}
+        <a href="/api/v1/logout"><Glyphicon glyph="log-out" /></a>
+      </Navbar.Text> : 
+      <Navbar.Form pullRight>
+        <Button href="/api/v1/login"><Glyphicon glyph="user" /> Logg inn</Button>
+      </Navbar.Form>
+
     return (
       <div>
         <Navbar inverse collapseOnSelect>
@@ -23,10 +32,7 @@ export class NavBar extends React.Component{
           <Nav pullRight>
             <MenuItem href="/home">Kalender</MenuItem>
             <MenuItem eventKey={3.1} href="/home">Noe</MenuItem>
-            <MenuItem eventKey={3.2}>Another action</MenuItem>
-            <Navbar.Form pullRight>
-              <Button href="/api/v1/login"><Glyphicon glyph="user" /> Logg inn</Button>
-            </Navbar.Form>
+            {userNav}
           </Nav>
         </Navbar.Collapse>
         </Navbar>

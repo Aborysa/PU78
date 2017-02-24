@@ -13,6 +13,7 @@ let apiRouter = api.api;
 let OICStrategy = require('passport-openid-connect').Strategy;
 let User = require('passport-openid-connect').User;
 
+
 const feideAPI = express.Router({mergeParams:true});
 
 nconf.argv()
@@ -51,8 +52,14 @@ feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"cal
 });
 
 feideAPI.get('/user', (req, res) => {
-  console.log("Req user");
   res.json(req.user);
+});
+
+feideAPI.get('/logout',(req,res) => {
+  req.logout();
+  req.session.destroy(function (err) {
+    res.redirect('/');
+  });
 });
 
 module.exports = feideAPI;

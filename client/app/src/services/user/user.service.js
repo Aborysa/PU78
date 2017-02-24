@@ -3,6 +3,8 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { http } from '../net';
 import { API_BASE,API_USER } from '../../common/constants';
 
+import { User } from './user';
+
 export class UserServiceProvider{
   constructor(){
     this.userSubject = new ReplaySubject();
@@ -10,8 +12,11 @@ export class UserServiceProvider{
   }
   refresh(){
     http.get(`${API_BASE}${API_USER}`).subscribe((data)=>{
-      console.log(data);
-      this.userSubject.next(data);
+      let u;
+      if(data){
+        u = new User(data.token.id_token,"",data.data.name);
+      }
+      this.userSubject.next(u);
     });
   }
   getUser(){
