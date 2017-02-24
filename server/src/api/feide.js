@@ -6,10 +6,15 @@ let morgan = require('morgan');
 let nconf = require('nconf');
 let session = require('express-session');
 
+let bz_router = express.Router({mergeParams:true});
+let api = require('./api.js');
+let apiRouter = api.api;
+
 let OICStrategy = require('passport-openid-connect').Strategy;
 let User = require('passport-openid-connect').User;
 
-const feideAPI = express();
+
+const feideAPI = express.Router({mergeParams:true});
 
 nconf.argv()
     .env('__')
@@ -41,13 +46,20 @@ feideAPI.use(passport.initialize());
 feideAPI.use(passport.session());
 
 feideAPI.get('/login', passport.authenticate('passport-openid-connect', {"successReturnToOrRedirect": "/"}));
-feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"callback": true, "successReturnToOrRedirect": "/"}));
+feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"callback": true}),(req,res)=>{
+  console.log("User logged in");
+  res.redirect('/home');
+});
 
 feideAPI.get('/user', (req, res) => {
-  res.json({
-    "hello": "world",
-    "user": req.user
-  })
-})
+  res.json(req.user);
+});
+
+feideAPI.get('/logout',(req,res) => {
+  req.logout();
+  req.session.destroy(function (err) {
+    res.redirect('/');
+  });
+});
 
 module.exports = feideAPI;

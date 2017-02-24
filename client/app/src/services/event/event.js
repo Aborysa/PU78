@@ -22,7 +22,7 @@ export class Event{
   get end(){
     return this._end;
   }
-  get description(){
+  get desc(){
     return this._desc;
   }
   canEdit(){

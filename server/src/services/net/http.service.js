@@ -1,15 +1,25 @@
-import { Observable, Subject } from 'rxjs';
+let rx = require('rxjs');
 
+let Observable = rx.Observable;
+let Subject = rx.Subject;
+
+let fetch = require('node-fetch');
+let Request = require('node-fetch').Request;
+let Headers = require('node-fetch').Headers;
 //not currently used
 const CLIENT_SECRET = "XXX";
 const CLIENT_ID = "XXX";
 const API_AUTH = "XXX";
-const API_BASE = "";
 
-export class HttpServiceProvider {
 
-  constructor() {
+class HttpServiceProvider {
+
+  constructor(CLIENT_SECRET,CLIENT_ID,API_AUTH) {
     // Request queue used for 503 and 401 responses
+    this.client_secret = CLIENT_SECRET;
+    this.client_id = CLIENT_ID;
+    this.auth_url = API_AUTH;
+    
     this.requestQueue = [];
     this.auth_token = '';
     this.waitingForToken = false;
@@ -46,9 +56,9 @@ export class HttpServiceProvider {
     if (!this.waitingForToken) {
       this.waitingForToken = true;
       // Request new token
-      this.post(`${API_BASE}${API_AUTH}`, {
-        client_secret: CLIENT_SECRET,
-        client_id: CLIENT_ID,
+      this.post(`${this.auth_url}`, {
+        client_secret: this.client_secret,
+        client_id: this.client_id,
         grant_type: 'client_credentials',
       }, true)
         .subscribe((data) => {
@@ -159,5 +169,10 @@ export class HttpServiceProvider {
     return this.request(request);
   }
 }
-// Export single instance
-export const http = new HttpServiceProvider();
+// Export default single instance, does not do auth
+const http = new HttpServiceProvider();
+
+module.exports = {
+  HttpServiceProvider: HttpServiceProvider,
+  http: http
+}

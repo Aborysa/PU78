@@ -3,11 +3,10 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 
-
 moment.locale('nb');
 BigCalendar.momentLocalizer(moment);
 
-var starttime = new Date(0, 0, 0, 8, 0, 0, 0)
+var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
 var myEvents = [
   {'title': 'FUCK YEAH',
   'allDay': false,
@@ -21,7 +20,7 @@ var myEvents = [
   'allDay': false,
   'start': new Date(2017,1,23,8),
   'end': new Date(2017,1,23,10)}
-]
+];
 
 require('style!css!react-big-calendar/lib/css/react-big-calendar.css');
 

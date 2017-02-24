@@ -8,9 +8,25 @@ import {NavBar} from './navBar.jsx';
 import {NotFound} from './404.jsx';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
 
+import { userService } from 'services/user/user.service.js';
+
+
 class App extends React.Component{
   constructor() {
     super();
+    this.state = {};
+  }
+  componentDidMount(){
+    userService.getUser().subscribe(user => {
+      if(user && browserHistory.getCurrentLocation().pathname == "/"){
+        browserHistory.push("/home");
+      }else if(!user){
+        browserHistory.push("/")
+      }
+      this.setState(Object.assign(this.state,{
+        user: user
+      }))
+    });
   }
   onComponentDidMount(){
     eventService.getEvents
@@ -18,7 +34,7 @@ class App extends React.Component{
   render() {
     return (
       <div>
-        <NavBar />
+        <NavBar currentUser={this.state.user} />
         <Router history={browserHistory}>
           <Route path='/' component={LoginView} />
           <Route path='/home' component={CalendarView} />
