@@ -13,10 +13,7 @@ let apiRouter = api.api;
 let OICStrategy = require('passport-openid-connect').Strategy;
 let User = require('passport-openid-connect').User;
 
-let db = require('node-mysql');
-
-let DB = db.DB;
-
+let database = require("../database.js");
 
 
 const feideAPI = express.Router({mergeParams:true});
@@ -33,9 +30,7 @@ nconf.argv()
       }
     });
 
-let database = new DB(nconf.get("database"));
-console.log(nconf.get("database"));
-feideAPI.use(session({
+console.log(nconf.get("database"));feideAPI.use(session({
   secret: nconf.get('session:secret'),
   resave: false,
   saveUninitialized: false
@@ -54,24 +49,17 @@ feideAPI.use(passport.session());
 feideAPI.get('/login', passport.authenticate('passport-openid-connect', {"successReturnToOrRedirect": "/"}));
 feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"callback": true}),(req,res)=>{
   let tokenID = req.user.data.sub;
- database.connect((conn, cb) => {
+  database.connect((conn, cb) => {
     console.log("connected")
-    conn.query(`SELECT EXISTS(SELECT * FROM Users WHERE idUsersFeide ='${tokenID}') AS userexists;`, (_,res) =>{
-      console.log(res[0].userexists);
-      if (res[0].userexists == 0) {
-        conn.query(`INSERT INTO Users(idUsersFeide) VALUES ('${tokenID}');`)
+    conn.query(`SELECT EXISTS(SELECT * FROM Users WHERE idUsersFeide ='${tokenID}') AS userexists;`, (_,rows) =>{
+      console.log(rows[0].userexists);
+      if (rows[0].userexists == 0) {
+        conn.query(`INSERT INTO Users(idUsersFeide) VALUES ('${tokenID}');`);
       }
 
-  })
-/*database.connect((conn, cb) => {
-  conn.query(`SELECT * FROM Users;`, (res,a,b,c) =>{
-  console.log(res,a,b,c);
-
-})*/
-})
- console.log(tokenID);
+    });
+  });
   res.redirect('/home');
-
 });
 
 feideAPI.get('/user', (req, res) => {
