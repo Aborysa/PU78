@@ -12,6 +12,7 @@ BigCalendar.momentLocalizer(moment);
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
 
 require('style!css!react-big-calendar/lib/css/react-big-calendar.css');
+require('style!css!react-datetime/css/react-datetime.css');
 
 export class CalendarView extends React.Component{
   constructor(props) {
@@ -39,7 +40,7 @@ export class CalendarView extends React.Component{
              views={['month', 'week', 'day']}
              defaultView={'week'}
              scrollToTime={starttime}
-             onSelectEvent={event => alert(event.title)}
+             onSelectEvent={event => (alert(event.desc))}
              onSelectSlot={(slotInfo) => alert(
               `selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
               `\nend: ${slotInfo.end.toLocaleString()}`)}
@@ -99,6 +100,7 @@ class AddEventModal extends React.Component{
     let start = this.pstart.toDate();
     let end = this.pend.toDate();
     eventService.pushEvent(new Event(-1,title,start,end,desc,true));
+    this.close();
   }
   render() {
 
@@ -160,14 +162,48 @@ class AddEventModal extends React.Component{
   }
 };
 
-class saveEventButton extends React.Component {
+class ViewEventModal extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = this.getInitialState();
+    this.pstart = new Date();
+    this.pend = new Date();
+  }
+  getInitialState() {
+    return { showModal: false };
+  }
+
+  close() {
+    this.setState({ showModal: false });
+  }
+  set start(v){
+    this.pstart = v;
+  }
+  set end(v){
+    this.pend = v;
+  }
+  open() {
+    this.setState({ showModal: true });
+  }
 
   render() {
-    // This syntax ensures `this` is bound within handleClick
+
     return (
-      <Button bsStyle="success" onClick={() => this.props.onClick()}>
-        {this.props.name}
-      </Button>
+      <div>
+        <Modal show={this.state.showModal} onHide={() => this.close()}>
+          <Modal.Header closeButton>
+            <Modal.Title>{ReactDOM.findDOMNode(this.refs.title).value}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form horizontal>
+              <p>{ReactDOM.findDOMNode(this.refs.desc).value}</p>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => this.close()} bsStyle="primary">Close</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     );
   }
-}
+};
