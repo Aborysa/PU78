@@ -10,3 +10,7 @@
   display: flex;
   align-items: center;
 }
+.navbar-inverse{
+  background: rgb(77, 77, 77); /* This is for ie8 and below */
+	background: rgba(77, 77, 77, 0.92) !important;
+}

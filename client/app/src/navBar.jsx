@@ -9,12 +9,24 @@ export class NavBar extends React.Component{
   }
   render() {
     let userNav = this.props.currentUser ?
-      <Navbar.Text pullRight>
-        {this.props.currentUser.fullname}
-        <a href="/api/v1/logout"><Glyphicon glyph="log-out" /></a>
-      </Navbar.Text> :
+      <Nav bsStyle="pills"pullRight>
+        <MenuItem eventKey={1} href="/home">Kalender</MenuItem>
+        <NavDropdown eventKey={2} title="Fag" id="basic-nav-dropdown">
+          <MenuItem eventKey={2.1} href="/fghj">Action</MenuItem>
+          <MenuItem eventKey={2.2}>Another action</MenuItem>
+          <MenuItem eventKey={2.3}>Something else here</MenuItem>
+          <MenuItem divider />
+          <MenuItem eventKey={2.4}>Separated link</MenuItem>
+        </NavDropdown>
+        <Navbar.Text>
+          Bruker: {this.props.currentUser.fullname}
+        </Navbar.Text>
+        <Navbar.Form pullRight>
+          <Button href="/api/v1/logout" bsStyle="primary"><Glyphicon glyph="log-out" /> Logg ut</Button>
+        </Navbar.Form>
+      </Nav>:
       <Navbar.Form pullRight>
-        <Button href="/api/v1/login"><Glyphicon glyph="user" /> Logg inn</Button>
+        <Button href="/api/v1/login" bsStyle="primary"><Glyphicon glyph="user" /> Logg inn</Button>
       </Navbar.Form>
 
     return (
@@ -22,19 +34,15 @@ export class NavBar extends React.Component{
         <Navbar inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="/">
-                <img src="assets/images/logo.png" height="200%"/>
+              <a href="/home">
+                <img src="assets/images/logo.png" height="150%"/>
               </a>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
-            <MenuItem href="/home">Kalender</MenuItem>
-            <MenuItem eventKey={3.1} href="/home">Noe</MenuItem>
+          <Navbar.Collapse>
             {userNav}
-          </Nav>
-        </Navbar.Collapse>
+          </Navbar.Collapse>
         </Navbar>
       </div>
     )
