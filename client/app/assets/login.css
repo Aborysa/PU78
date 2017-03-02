@@ -3,21 +3,20 @@
 	border-radius: 30px;
 	left:25%;
 	width:50%;
-	height:50%;
+	height:auto;
 	top:25%;
 	background-color: #4d4d4d !important;
 	position:absolute;
 	background: rgb(77, 77, 77); /* This is for ie8 and below */
 	background: rgba(77, 77, 77, 0.92) !important;
-
+	word-wrap: break-word;
 }
 .jumbotron p{
 	font-family: 'Quicksand', sans-serif;
 	color: white;
+	font-size: 20px !important;
 }
-.logoOverlay{
-	margin: 30px;
-}
+
 .cb-slideshow,
 .cb-slideshow:after {
     position: fixed;
@@ -238,6 +237,10 @@
 
 @media screen and (max-width: 1140px) {
     .cb-slideshow li div h3 { font-size: 140px }
+		.jumbotron{
+			width: 90%;
+			left: 5%;
+		}
 }
 @media screen and (max-width: 600px) {
     .cb-slideshow li div h3 { font-size: 80px }
