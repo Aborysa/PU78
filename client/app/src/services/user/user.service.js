@@ -1,7 +1,7 @@
 import { Observable, ReplaySubject } from 'rxjs';
 
-import { http } from '../net';
-import { API_BASE,API_USER } from '../../common/constants';
+import { http } from 'services/net';
+import { API_BASE,API_USER } from 'common/constants';
 
 import { User } from './user';
 

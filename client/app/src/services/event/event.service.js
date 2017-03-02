@@ -1,12 +1,12 @@
 import { Observable, ReplaySubject } from 'rxjs';
-import { API_BASE, API_EVENTS } from '../common/constants';
-import { http } from '../net';
+import { API_BASE, API_EVENTS } from 'common/constants';
+import { http } from 'services/net';
 
 
 export class EventServiceProvider{
   constructor(){
     this.eventSubject = new ReplaySubject();  
-    this.events = [];
+    this._events = [];
   }
 
 
@@ -14,20 +14,25 @@ export class EventServiceProvider{
     return this.eventSubject.asObservable();
   }
 
+  set events(events){
+    this._events = events;
+    this.eventSubject.next(events);
+  }
+  get events(){
+    return this._events;
+  }
   refresh(){
     http.get(`${API_BASE}${API_EVENTS}`).subscribe((res)=>{
-      console.log(res);
+      this.events = res;
     });
   }
 
   pushEvent(event){
     http.post(`${API_BASE}${API_EVENTS}`).subscribe((res) => {
-      console.log(res);
-      this.events.push(event);
+      this.events = this.events.push(event).slice();
       this.eventSubject.next(this.events);
     });
   }
-
 }
 
 
