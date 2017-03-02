@@ -8,5 +8,11 @@
     "issuer": "https:\/\/auth.somepage.com",
     "authorization_endpoint": "https:\/\/auth.dataporten.no\/oauth\/authorization",
     "token_endpoint": "https:\/\/somepage.com\/oauth\/token"
+  },
+  "database": {
+    "host": "",
+    "user": "root",
+    "password": "",
+    "database": "studynator"
   }
 }
