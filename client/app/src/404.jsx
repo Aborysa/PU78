@@ -9,7 +9,7 @@ export class NotFound extends React.Component{
     return (
       <div className="wrap">
         <div className="banner">
-          <img src="/app/assets/images/banner.png" alt="404 in a 404, wow dude...." />
+          <img src="/assets/images/banner.png" alt="404 in a 404, wow dude...." />
         </div>
         <div className="page">
           <h2>Dude,we can't find that page!</h2>

@@ -1,6 +1,6 @@
 import React from "react";
-import {Col, Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button, Glyphicon} from "react-bootstrap";
-import { Link } from 'react-router';
+import {Col, Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button, Glyphicon, Tooltip} from "react-bootstrap";
+import { LinkContainer } from 'react-router-bootstrap';
 
 
 export class NavBar extends React.Component{
@@ -8,13 +8,24 @@ export class NavBar extends React.Component{
     super(props);
   }
   render() {
-    let userNav = this.props.currentUser ? 
-      <Navbar.Text pullRight>
-        {this.props.currentUser.fullname}
-        <a href="/api/v1/logout"><Glyphicon glyph="log-out" /></a>
-      </Navbar.Text> : 
+    let userNav = this.props.currentUser ?
+      <Nav bsStyle="pills"pullRight>
+        <NavDropdown eventKey={2} title="Fag" id="basic-nav-dropdown">
+          <MenuItem eventKey={2.1} href="/fghj">Action</MenuItem>
+          <MenuItem eventKey={2.2}>Another action</MenuItem>
+          <MenuItem eventKey={2.3}>Something else here</MenuItem>
+          <MenuItem divider />
+          <MenuItem eventKey={2.4}>Separated link</MenuItem>
+        </NavDropdown>
+        <Navbar.Text>
+          Bruker: {this.props.currentUser.fullname}
+        </Navbar.Text>
+        <Navbar.Form pullRight>
+          <Button href="/api/v1/logout" bsStyle="primary"><Glyphicon glyph="log-out" /> Logg ut</Button>
+        </Navbar.Form>
+      </Nav>:
       <Navbar.Form pullRight>
-        <Button href="/api/v1/login"><Glyphicon glyph="user" /> Logg inn</Button>
+        <Button href="/api/v1/login" bsStyle="primary"><Glyphicon glyph="user" /> Logg inn</Button>
       </Navbar.Form>
 
     return (
@@ -22,21 +33,21 @@ export class NavBar extends React.Component{
         <Navbar inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="/">
-                <img src="assets/images/StudynatorLogo.png" height="200%"/> 
+              <a href="/home">
+                <img src="assets/images/logo.png" height="150%"/>
               </a>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
-            <MenuItem href="/home">Kalender</MenuItem>
-            <MenuItem eventKey={3.1} href="/home">Noe</MenuItem>
+          <Navbar.Collapse>
             {userNav}
-          </Nav>
-        </Navbar.Collapse>
+          </Navbar.Collapse>
         </Navbar>
       </div>
     )
   }
 }
+
+const tooltipHome = (
+  <Tooltip id="tooltip"><strong>Holy guacamole!</strong> Check this info.</Tooltip>
+);

@@ -3,15 +3,16 @@ import ReactDOM from 'react-dom';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
-import DateTimeField from 'react-bootstrap-datetimepicker'
-import {Event, eventService} from 'services/event';
+import Datetime from 'react-datetime';
+import { eventService,Event } from 'services/event';
+
 moment.locale('nb');
 BigCalendar.momentLocalizer(moment);
 
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
 
 require('style!css!react-big-calendar/lib/css/react-big-calendar.css');
-require('style!css!react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css');
+require('style!css!react-datetime/css/react-datetime.css');
 
 export class CalendarView extends React.Component{
   constructor(props) {
@@ -26,18 +27,21 @@ export class CalendarView extends React.Component{
         events: events
       }));
     });
+
   }
+
   render() {
     return (
       <div>
         <Col xs={12} md={10} mdOffset={1}>
           <BigCalendar
-             style={{height: '420px'}}
+             style={{height: '650px'}}
              events={this.state.events}
              views={['month', 'week', 'day']}
              defaultView={'week'}
+             popup={true}
              scrollToTime={starttime}
-             onSelectEvent={event => alert(event.title)}
+             onSelectEvent={event => (alert(event.desc))}
              onSelectSlot={(slotInfo) => alert(
               `selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
               `\nend: ${slotInfo.end.toLocaleString()}`)}
@@ -72,6 +76,8 @@ class AddEventModal extends React.Component{
   constructor(props){
     super(props);
     this.state = this.getInitialState();
+    this.pstart = new Date();
+    this.pend = new Date();
   }
   getInitialState() {
     return { showModal: false };
@@ -80,20 +86,24 @@ class AddEventModal extends React.Component{
   close() {
     this.setState({ showModal: false });
   }
-
+  set start(v){
+    this.pstart = v;
+  }
+  set end(v){
+    this.pend = v;
+  }
   open() {
     this.setState({ showModal: true });
   }
-  saveEvent(e) {
+  saveClick(e){
     let title = ReactDOM.findDOMNode(this.refs.title).value;
-    let desc = ReactDOM.findDOMNode(this.refs.description).value;
-    let startDate = this.refs.startDate.getValue();
-    let endDate = this.refs.endDate.getValue();
-    eventService.pushEvent(new Event(-1,title,new Date(), new Date(), desc));
+    let desc = ReactDOM.findDOMNode(this.refs.desc).value;
+    let start = this.pstart.toDate();
+    let end = this.pend.toDate();
+    eventService.pushEvent(new Event(-1,title,start,end,desc,true));
     this.close();
   }
   render() {
-
 
     return (
       <div>
@@ -118,7 +128,7 @@ class AddEventModal extends React.Component{
                   Beskrivelse
                 </Col>
                 <Col sm={10}>
-                  <FormControl ref="description" componentClass="textarea" placeholder="Beskrivelse" maxLength="140"/>
+                  <FormControl ref="desc" componentClass="textarea" placeholder="Beskrivelse" maxLength="140"/>
                 </Col>
               </FormGroup>
               <FormGroup controlId="formHorizontalStartDate">
@@ -126,8 +136,9 @@ class AddEventModal extends React.Component{
                   Starttid
                 </Col>
                 <Col sm={10}>
-                  <DateTimeField
-                    ref="startDate" defaultText="Dato"/>
+                  <Col sm={6}>
+                    <Datetime onChange={(v) => this.start = v} ref="start" />
+                  </Col>
                 </Col>
               </FormGroup>
               <FormGroup controlId="formHorizontalEndDate">
@@ -135,14 +146,15 @@ class AddEventModal extends React.Component{
                   Sluttid
                 </Col>
                 <Col sm={10}>
-                  <DateTimeField
-                    ref="endDate" defaultText="Dato"/>
+                  <Col sm={6}>
+                    <Datetime onChange={(v) => this.end = v} ref="end" />
+                  </Col>
                 </Col>
               </FormGroup>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => this.saveEvent()} bsStyle="success">Save</Button>
+            <Button onClick={() => this.saveClick()} bsStyle="success">Save</Button>
             <Button onClick={() => this.close()} bsStyle="primary">Close</Button>
           </Modal.Footer>
         </Modal>
@@ -151,19 +163,51 @@ class AddEventModal extends React.Component{
   }
 };
 
-class saveEventButton extends React.Component {
-  handleClick() {
+class ViewEventModal extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = this.getInitialState();
+    this.pstart = new Date();
+    this.pend = new Date();
+    this.title = ReactDOM.findDOMNode(this.refs.title).value;
+    this.desc = ReactDOM.findDOMNode(this.refs.desc).value;
+  }
+  getInitialState() {
+    return { showModal: false };
+  }
 
-
-    console.log('this is:', this);
+  close() {
+    this.setState({ showModal: false });
+  }
+  set start(v){
+    this.pstart = v;
+  }
+  set end(v){
+    this.pend = v;
+  }
+  open() {
+    this.setState({ showModal: true });
   }
 
   render() {
-    // This syntax ensures `this` is bound within handleClick
+
     return (
-      <Button bsStyle="" onClick={(e) => this.handleClick(e)}>
-        {this.props.name}
-      </Button>
+      <div>
+        <Button></Button>
+        <Modal show={this.state.showModal} onHide={() => this.close()}>
+          <Modal.Header closeButton>
+            <Modal.Title>{title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form horizontal>
+              <p>{desc}</p>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => this.close()} bsStyle="primary">Close</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     );
   }
-}
+};
