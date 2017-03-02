@@ -33,9 +33,10 @@ class App extends React.Component{
     eventService.getEvents
   }
   render() {
+    let nav = this.state.user ?   <NavBar currentUser={this.state.user} /> : null;
     return (
       <div>
-        <NavBar currentUser={this.state.user} />
+        {nav}
         <Router history={browserHistory}>
           <Route path='/' component={LoginView} />
           <Route path='/home' component={CalendarView} />
