@@ -1,6 +1,6 @@
 import React from "react";
-import {Col, Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button, Glyphicon} from "react-bootstrap";
-import { Link } from 'react-router';
+import {Col, Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button, Glyphicon, Tooltip} from "react-bootstrap";
+import { LinkContainer } from 'react-router-bootstrap';
 
 
 export class NavBar extends React.Component{
@@ -10,7 +10,6 @@ export class NavBar extends React.Component{
   render() {
     let userNav = this.props.currentUser ?
       <Nav bsStyle="pills"pullRight>
-        <MenuItem eventKey={1} href="/home">Kalender</MenuItem>
         <NavDropdown eventKey={2} title="Fag" id="basic-nav-dropdown">
           <MenuItem eventKey={2.1} href="/fghj">Action</MenuItem>
           <MenuItem eventKey={2.2}>Another action</MenuItem>
@@ -48,3 +47,7 @@ export class NavBar extends React.Component{
     )
   }
 }
+
+const tooltipHome = (
+  <Tooltip id="tooltip"><strong>Holy guacamole!</strong> Check this info.</Tooltip>
+);
