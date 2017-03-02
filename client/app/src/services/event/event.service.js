@@ -2,6 +2,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { API_BASE, API_EVENTS } from 'common/constants';
 import { http } from 'services/net';
 
+import { jsonToEvent } from './event';
 
 export class EventServiceProvider{
   constructor(){
@@ -16,21 +17,31 @@ export class EventServiceProvider{
 
   set events(events){
     this._events = events;
+    console.log("Pushing new events",events);
     this.eventSubject.next(events);
   }
   get events(){
     return this._events;
   }
   refresh(){
-    http.get(`${API_BASE}${API_EVENTS}`).subscribe((res)=>{
-      this.events = res;
-    });
+    http.get(`${API_BASE}${API_EVENTS}`)
+      .map(ret => {
+        let events = [];
+        for(let e of ret){
+          events.push(jsonToEvent(e));
+        }
+        return events;
+      })
+      .subscribe((res)=>{
+        console.log(res);
+        this.events = res;
+      });
   }
 
   pushEvent(event){
-    http.post(`${API_BASE}${API_EVENTS}`).subscribe((res) => {
-      this.events = this.events.push(event).slice();
-      this.eventSubject.next(this.events);
+    http.post(`${API_BASE}${API_EVENTS}`,event.serverEvent).subscribe((res) => {
+      this.events.push(event);
+      this.events = this.events.slice();
     });
   }
 }
