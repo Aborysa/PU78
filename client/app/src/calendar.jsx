@@ -35,10 +35,11 @@ export class CalendarView extends React.Component{
       <div>
         <Col xs={12} md={10} mdOffset={1}>
           <BigCalendar
-             style={{height: '420px'}}
+             style={{height: '650px'}}
              events={this.state.events}
              views={['month', 'week', 'day']}
              defaultView={'week'}
+             popup={true}
              scrollToTime={starttime}
              onSelectEvent={event => (alert(event.desc))}
              onSelectSlot={(slotInfo) => alert(
@@ -168,6 +169,8 @@ class ViewEventModal extends React.Component{
     this.state = this.getInitialState();
     this.pstart = new Date();
     this.pend = new Date();
+    this.title = ReactDOM.findDOMNode(this.refs.title).value;
+    this.desc = ReactDOM.findDOMNode(this.refs.desc).value;
   }
   getInitialState() {
     return { showModal: false };
@@ -190,13 +193,14 @@ class ViewEventModal extends React.Component{
 
     return (
       <div>
+        <Button></Button>
         <Modal show={this.state.showModal} onHide={() => this.close()}>
           <Modal.Header closeButton>
-            <Modal.Title>{ReactDOM.findDOMNode(this.refs.title).value}</Modal.Title>
+            <Modal.Title>{title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form horizontal>
-              <p>{ReactDOM.findDOMNode(this.refs.desc).value}</p>
+              <p>{desc}</p>
             </Form>
           </Modal.Body>
           <Modal.Footer>
