@@ -1,6 +1,17 @@
 
 
 
+export const jsonToEvent = (data) => {
+  return new Event(
+    data.idEvent,
+    data.eventTitle,
+    new Date(data.eventStart),
+    new Date(data.eventEnd),
+    data.eventDesc
+  );
+}
+
+
 export class Event{
   constructor(id,title,start,end,desc,editable){
     this._id = id;
@@ -27,6 +38,14 @@ export class Event{
   }
   canEdit(){
     return this._editable;
+  }
+  get serverEvent(){
+    return {
+      title: this.title,
+      desc: this.desc,
+      startDate: this.start.toISOString(),
+      endDate: this.end.toISOString()
+    }
   }
 
 }
