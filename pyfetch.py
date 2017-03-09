@@ -24,14 +24,16 @@ if jfile:
     d = {}
     for i2,v2 in v.items():
       d[i2] = v2
-    with urllib.request.urlopen((args.url).format(quote(v[args.field]))) as req:
-      try:
-        content = json.loads(req.read().decode('utf-8',"ignore"))
-        for i3,v3 in content["course"].items():
-          d[i3] = v3
-      except e:
-        print("Failed for url",(args.url).format(v[args.field]))
-    
+    try:
+      with urllib.request.urlopen((args.url).format(quote(v[args.field]))) as req:
+        try:
+          content = json.loads(req.read().decode('utf-8',"ignore"))
+          for i3,v3 in content["course"].items():
+            d[i3] = v3
+        except e:
+          print("Failed for url",(args.url).format(v[args.field]))
+    except:
+      pass
     outlist.append(d)
 
   with open(args.out,"w") as f:
