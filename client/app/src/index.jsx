@@ -12,6 +12,14 @@ import { userService } from 'services/user/user.service.js';
 import { eventService } from 'services/event';
 
 
+const routes = (
+  <Route component={App}>
+    <Route path='/' component={LoginView} />
+    <Route path='/home' component={CalendarView} />
+    <Route path="*" component={NotFound} />
+  </Route>
+);
+
 class App extends React.Component{
   constructor() {
     super();
@@ -36,9 +44,7 @@ class App extends React.Component{
       <div>
         {nav}
         <Router history={browserHistory}>
-          <Route path='/' component={LoginView} />
-          <Route path='/home' component={CalendarView} />
-          <Route path="*" component={NotFound} />
+          {routes}
         </Router>
       </div>
     )
