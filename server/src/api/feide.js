@@ -13,6 +13,8 @@ let apiRouter = api.api;
 let OICStrategy = require('passport-openid-connect').Strategy;
 let User = require('passport-openid-connect').User;
 
+let database = require("../database.js");
+
 
 const feideAPI = express.Router({mergeParams:true});
 
@@ -28,8 +30,7 @@ nconf.argv()
       }
     });
 
-
-feideAPI.use(session({
+console.log(nconf.get("database"));feideAPI.use(session({
   secret: nconf.get('session:secret'),
   resave: false,
   saveUninitialized: false
@@ -47,7 +48,17 @@ feideAPI.use(passport.session());
 
 feideAPI.get('/login', passport.authenticate('passport-openid-connect', {"successReturnToOrRedirect": "/"}));
 feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"callback": true}),(req,res)=>{
-  console.log("User logged in");
+  let tokenID = req.user.data.sub;
+  database.connect((conn, cb) => {
+    console.log("connected")
+    conn.query(`SELECT EXISTS(SELECT * FROM Users WHERE idUsersFeide ='${tokenID}') AS userexists;`, (_,rows) =>{
+      console.log(rows[0].userexists);
+      if (rows[0].userexists == 0) {
+        conn.query(`INSERT INTO Users(idUsersFeide) VALUES ('${tokenID}');`);
+      }
+
+    });
+  });
   res.redirect('/home');
 });
 

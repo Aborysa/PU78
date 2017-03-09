@@ -9,6 +9,7 @@ import {NotFound} from './404.jsx';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
 
 import { userService } from 'services/user/user.service.js';
+import { eventService } from 'services/event';
 
 
 const routes = (
@@ -26,6 +27,7 @@ class App extends React.Component{
   }
   componentDidMount(){
     userService.getUser().subscribe(user => {
+      eventService.refresh();
       if(user && browserHistory.getCurrentLocation().pathname == "/"){
         browserHistory.push("/home");
       }else if(!user){
@@ -33,11 +35,8 @@ class App extends React.Component{
       }
       this.setState(Object.assign(this.state,{
         user: user
-      }))
+      }));
     });
-  }
-  onComponentDidMount(){
-    eventService.getEvents
   }
   render() {
     let nav = this.state.user ?   <NavBar currentUser={this.state.user} /> : null;
