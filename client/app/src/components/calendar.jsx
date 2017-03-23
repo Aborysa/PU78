@@ -15,6 +15,7 @@ export class Calendar extends React.Component {
     $(calendar).fullCalendar({
       events: [],
       editable: true,
+      firstDay: 1,
       defaultView: "agendaDay",
       header: {
         left:   'title',

@@ -7,6 +7,7 @@ import Datetime from 'react-datetime';
 import { eventService,Event } from 'services/event';
 import { AddEventModal, ViewLectureModal } from 'components/modals';
 import { Calendar } from 'components/calendar.jsx';
+import { ListCalendar } from 'components/listCalendar.jsx';
 
 moment.locale('nb');
 BigCalendar.momentLocalizer(moment);
@@ -76,6 +77,11 @@ export class CalendarView extends React.Component{
             <Button>Øving</Button>
             <Button>Annet</Button>
           </ButtonGroup>
+          <ListCalendar
+            style={{height: '300px'}}
+            events={this.state.events}
+            toolbar={false}
+            />
         </Col>
       </div>
     )
