@@ -24,6 +24,7 @@ export class EventServiceProvider{
     return this._events;
   }
   refresh(){
+    console.log("Refresh");
     http.get(`${API_BASE}${API_EVENTS}`)
       .map(ret => {
         let events = [];
@@ -40,7 +41,7 @@ export class EventServiceProvider{
   }
 
   updateEvent(id,event){
-    http.post(`${API_BASE}${API_EVENTS}`,event.patchEvent).subscribe((res) => {
+    http.patch(`${API_BASE}${API_EVENTS}`,event.patchEvent).subscribe((res) => {
       console.log(res);
       this._eventCache[id] = event;
       let events = [];
@@ -58,7 +59,6 @@ export class EventServiceProvider{
       this._eventCache[event.id] = event;
     });
   }
-  
 }
 
 

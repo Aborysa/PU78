@@ -20,10 +20,11 @@ export class HttpServiceProvider {
     // Prevents 'DOS' protection
     this.requestSubject
       // Zip each request with an interval stream
-      .zip(Observable.interval(100).skipUntil(this.requestSubject), (a, b) => a)
+      .zip(Observable.interval(10000).skipUntil(this.requestSubject), (a, b) => a)
       // Subscrive to this stream
       .subscribe((requestPair) => {
         // preforme request
+        console.log("Performing request",requestPair);
         this.count++;
         Observable.fromPromise(fetch(requestPair.request))
           /*
@@ -99,6 +100,7 @@ export class HttpServiceProvider {
    * @return Observable<{}>
    */
   request(request,ttype,token) {
+    console.log("New request",request);
     // Add token to request
     request.headers.set('Authorization', `${ttype || "Bearer"} ${token || this.auth_token}`);
     const resolver = new Subject();

@@ -17,8 +17,8 @@ export const calendarToEvent = (o) => {
   return new Event(
     o.id,
     o.title,
-    o.start,
-    o.end,
+    o.start.format('YYYY/MM/DD HH:mm:ss'),
+    o.end.format('YYYY/MM/DD HH:mm:ss'),
     o.desc,
     o.editable
   )
@@ -33,6 +33,11 @@ export class Event{
     this._desc = desc;
     this._type = type;
     this._editable = editable;
+  }
+  set id(nid){
+    if(this.id <= 0){
+      this.id = nid;
+    }
   }
   get id(){
     return this._id;
@@ -60,7 +65,7 @@ export class Event{
       id: this.id,
       editable: this.editable,
       desc: this.desc,
-      allDay: moment.duration(this.end - this.start).days() > 0
+      allDay: false//moment.duration(this.end - this.start).days() > 0
     }
   }
   get serverEvent(){
@@ -74,5 +79,6 @@ export class Event{
   get patchEvent(){
     let sevent = this.serverEvent;
     sevent.id = this.id;
+    return sevent;
   }
 }

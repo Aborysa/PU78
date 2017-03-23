@@ -21,13 +21,13 @@ export class Calendar extends React.Component {
         center: '',
         right:  'today prev,next month agendaDay agendaWeek'
       },
-      eventDragStop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
-      eventResizeStop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view)
+      eventDrop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
+      eventResize: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view)
     });
     this.init = true;
   }
   eventChanged(event, jsEvent, ui, view){
-    console.log("Event changed",event);
+    console.log("Event changed",event,calendarToEvent(event),moment(event.start.format('YYYY/MM/DD HH:mm:ss')));
     eventService.updateEvent(event.id,calendarToEvent(event));
   }
   componentWillReceiveProps(nextProps){
