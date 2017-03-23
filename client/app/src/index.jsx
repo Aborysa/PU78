@@ -39,7 +39,7 @@ class App extends React.Component{
     });
   }
   render() {
-    let nav = this.state.user ?   <NavBar currentUser={this.state.user} /> : null;
+    let nav = this.state.user ? <NavBar currentUser={this.state.user} /> : null;
     return (
       <div>
         {nav}

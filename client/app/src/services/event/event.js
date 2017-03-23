@@ -3,7 +3,7 @@
 
 export const jsonToEvent = (data) => {
   return new Event(
-    data.idEvent,
+    data.idEvents,
     data.eventTitle,
     new Date(data.eventStart),
     new Date(data.eventEnd),
@@ -16,13 +16,13 @@ export class Event{
   constructor(id,title,start,end,desc,editable){
     this._id = id;
     this._title = title;
-    this._start = start;
-    this._end = end;
+    this._start = moment(start);
+    this._end = moment(end);
     this._desc = desc;
     this._editable = editable; 
   }
   get id(){
-    return this.id;
+    return this._id;
   }
   get title(){
     return this._title;

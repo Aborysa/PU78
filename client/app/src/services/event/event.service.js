@@ -17,7 +17,6 @@ export class EventServiceProvider{
 
   set events(events){
     this._events = events;
-    console.log("Pushing new events",events);
     this.eventSubject.next(events);
   }
   get events(){
@@ -33,7 +32,6 @@ export class EventServiceProvider{
         return events;
       })
       .subscribe((res)=>{
-        console.log(res);
         this.events = res;
       });
   }

@@ -58,8 +58,6 @@ export class CalendarView extends React.Component{
     return (
       <div>
         <Col xs={12} md={10} mdOffset={1}>
-        
-          <Calendar />
           <AddEventModal />
           {viewEventModal}
         </Col>
@@ -74,7 +72,7 @@ export class CalendarView extends React.Component{
           </ButtonGroup>
         </Col>
         <Col xs={12} md={10} mdOffset={1}>
-          <BigCalendar
+          <Calendar
             style={{height: '300px'}}
             events={this.state.events}
             views={['agenda']}
