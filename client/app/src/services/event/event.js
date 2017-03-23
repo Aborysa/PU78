@@ -39,13 +39,23 @@ export class Event{
   canEdit(){
     return this._editable;
   }
+  get editable(){
+    return false;
+  }
+  get calendarEvent(){
+    return {
+      title: this.title,
+      start: this.start,
+      end: this.end,
+      id: this.id
+    }
+  }
   get serverEvent(){
     return {
       title: this.title,
       desc: this.desc,
-      startDate: this.start.toISOString(),
-      endDate: this.end.toISOString()
+      startDate: this.start.format('YYYY/MM/DD HH:mm:ss'),
+      endDate: this.end.format('YYYY/MM/DD HH:mm:ss')
     }
   }
-
 }

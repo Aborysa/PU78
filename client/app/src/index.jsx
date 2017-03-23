@@ -27,6 +27,7 @@ class App extends React.Component{
   }
   componentDidMount(){
     userService.getUser().subscribe(user => {
+      console.log("User",user);
       eventService.refresh();
       if(user && browserHistory.getCurrentLocation().pathname == "/"){
         browserHistory.push("/home");
