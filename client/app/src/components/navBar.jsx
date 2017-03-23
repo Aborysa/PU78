@@ -16,7 +16,6 @@ export class NavBar extends React.Component{
             <MenuItem eventKey={2.2}>Another action</MenuItem>
             <MenuItem eventKey={2.3}>Something else here</MenuItem>
             <MenuItem divider />
-            <MenuItem eventKey={2.4}>Separated link</MenuItem>
           </NavDropdown>
         </Nav>
         <Navbar.Text pullRight>
