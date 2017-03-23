@@ -7,7 +7,6 @@ const database = require("../database.js");
 eventRouter.get('/events', (req, res) => {
   let tokenID = req.user.data.sub;
   database.connect((conn, cb) => {
-    console.log(tokenID);
     conn.query(`SELECT * FROM Events WHERE idUsersFeide_fkEvents ='${tokenID}';`, (_,rows) =>{
       if(_){
         console.log(_);
