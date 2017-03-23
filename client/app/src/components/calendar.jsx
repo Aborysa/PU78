@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import moment from 'moment';
 
+import { eventService, Event, calendarToEvent } from 'services/event';
 
 export class Calendar extends React.Component {
   constructor(props){
@@ -27,7 +28,8 @@ export class Calendar extends React.Component {
     this.init = true;
   }
   eventChanged(event, jsEvent, ui, view){
-    console.log(event,jsEvent,ui,view);
+    console.log("Event changed",event);
+    eventService.updateEvent(event.id,calendarToEvent(event));
   }
   componentWillReceiveProps(nextProps){
     const { calendar } = this.refs;
@@ -35,9 +37,7 @@ export class Calendar extends React.Component {
     for(let e of nextProps.events){
       eventDisplay.push(e.calendarEvent);
     }
-
     $(calendar).fullCalendar('removeEvents');
-    
     $(calendar).fullCalendar('addEventSource', eventDisplay);
   }
 

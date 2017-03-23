@@ -8,6 +8,7 @@ export class EventServiceProvider{
   constructor(){
     this.eventSubject = new ReplaySubject();  
     this._events = [];
+    this._eventCache = {};
   }
 
 
@@ -27,7 +28,9 @@ export class EventServiceProvider{
       .map(ret => {
         let events = [];
         for(let e of ret){
-          events.push(jsonToEvent(e));
+          let ce = jsonToEvent(e);
+          events.push(ce);
+          this._eventCache[ce.id] = ce;
         }
         return events;
       })
@@ -36,12 +39,26 @@ export class EventServiceProvider{
       });
   }
 
+  updateEvent(id,event){
+    http.post(`${API_BASE}${API_EVENTS}`,event.patchEvent).subscribe((res) => {
+      console.log(res);
+      this._eventCache[id] = event;
+      let events = [];
+      for(let i in this._eventCache){
+        events.push(this._eventCache[i]);
+      }
+      this.events = events;
+    });
+  }
+
   pushEvent(event){
     http.post(`${API_BASE}${API_EVENTS}`,event.serverEvent).subscribe((res) => {
       this.events.push(event);
       this.events = this.events.slice();
+      this._eventCache[event.id] = event;
     });
   }
+  
 }
 
 

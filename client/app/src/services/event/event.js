@@ -1,6 +1,7 @@
 
 
 
+
 export const jsonToEvent = (data) => {
   return new Event(
     data.idEvents,
@@ -12,15 +13,26 @@ export const jsonToEvent = (data) => {
   );
 }
 
+export const calendarToEvent = (o) => {
+  return new Event(
+    o.id,
+    o.title,
+    o.start,
+    o.end,
+    o.desc,
+    o.editable
+  )
+}
 
 export class Event{
-  constructor(id,title,start,end,desc,editable){
+  constructor(id,title,start,end,desc,editable,type){
     this._id = id;
     this._title = title;
     this._start = moment(start);
     this._end = moment(end);
     this._desc = desc;
-    this._editable = editable; 
+    this._type = type;
+    this._editable = editable;
   }
   get id(){
     return this._id;
@@ -46,7 +58,9 @@ export class Event{
       start: this.start,
       end: this.end,
       id: this.id,
-      editable: this.editable
+      editable: this.editable,
+      desc: this.desc,
+      allDay: moment.duration(this.end - this.start).days() > 0
     }
   }
   get serverEvent(){
@@ -56,5 +70,9 @@ export class Event{
       startDate: this.start.format('YYYY/MM/DD HH:mm:ss'),
       endDate: this.end.format('YYYY/MM/DD HH:mm:ss')
     }
+  }
+  get patchEvent(){
+    let sevent = this.serverEvent;
+    sevent.id = this.id;
   }
 }
