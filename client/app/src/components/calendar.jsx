@@ -14,16 +14,20 @@ export class Calendar extends React.Component {
     $(calendar).fullCalendar({
       events: [],
       editable: true,
-      defaultView: "month",
+      defaultView: "agendaDay",
       header: {
         left:   'title',
         center: '',
         right:  'today prev,next month agendaDay agendaWeek'
-    }
+      },
+      eventDragStop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
+      eventResizeStop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view)
     });
     this.init = true;
   }
-
+  eventChanged(event, jsEvent, ui, view){
+    console.log(event,jsEvent,ui,view);
+  }
   componentWillReceiveProps(nextProps){
     const { calendar } = this.refs;
     let eventDisplay = [];

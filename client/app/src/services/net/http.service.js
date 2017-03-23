@@ -98,9 +98,9 @@ export class HttpServiceProvider {
    * @param {Request} url
    * @return Observable<{}>
    */
-  request(request) {
+  request(request,ttype,token) {
     // Add token to request
-    request.headers.set('Authorization', `Bearer ${this.auth_token}`);
+    request.headers.set('Authorization', `${ttype || "Bearer"} ${token || this.auth_token}`);
     const resolver = new Subject();
     // Push request into request 'stream'/queue
     this.requestSubject.next({ request, subject: resolver });

@@ -13,7 +13,6 @@ BigCalendar.momentLocalizer(moment);
 
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
 
-require('style!css!react-big-calendar/lib/css/react-big-calendar.css');
 require('style!css!react-datetime/css/react-datetime.css');
 
 export class CalendarView extends React.Component{
@@ -58,6 +57,13 @@ export class CalendarView extends React.Component{
     return (
       <div>
         <Col xs={12} md={10} mdOffset={1}>
+          <Calendar
+            style={{height: '300px'}}
+            events={this.state.events}
+            toolbar={false}
+          />
+        </Col>
+        <Col xs={12} md={10} mdOffset={1}>
           <AddEventModal />
           {viewEventModal}
         </Col>
@@ -70,15 +76,6 @@ export class CalendarView extends React.Component{
             <Button>Øving</Button>
             <Button>Annet</Button>
           </ButtonGroup>
-        </Col>
-        <Col xs={12} md={10} mdOffset={1}>
-          <Calendar
-            style={{height: '300px'}}
-            events={this.state.events}
-            views={['agenda']}
-            defaultView={'agenda'}
-            toolbar={false}
-          />
         </Col>
       </div>
     )

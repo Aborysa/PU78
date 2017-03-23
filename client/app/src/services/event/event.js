@@ -7,7 +7,8 @@ export const jsonToEvent = (data) => {
     data.eventTitle,
     new Date(data.eventStart),
     new Date(data.eventEnd),
-    data.eventDesc
+    data.eventDesc,
+    true
   );
 }
 
@@ -36,18 +37,16 @@ export class Event{
   get desc(){
     return this._desc;
   }
-  canEdit(){
-    return this._editable;
-  }
   get editable(){
-    return false;
+    return this._editable;
   }
   get calendarEvent(){
     return {
       title: this.title,
       start: this.start,
       end: this.end,
-      id: this.id
+      id: this.id,
+      editable: this.editable
     }
   }
   get serverEvent(){
