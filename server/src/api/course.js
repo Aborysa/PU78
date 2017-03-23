@@ -20,4 +20,16 @@ courseRouter.get('/courses', (req,res) => {
   });
 });
 
+courseRouter.post('/events', (req, res) => {
+  let tokenID = req.user.data.sub;
+  let courseid = req.body.course;
+  let role = req.body.courserole;
+  database.connect((conn, cb) => {
+    conn.query(`INSERT INTO CourseUsers(idUser_fkCourseUsers, idCourse_fkCourseUsers, courseUserRole) VALUES('${tokenID}', '${courseid}', '${role}');`,(_) => {
+      console.log(_);
+    })
+  });
+  res.json({status:"ok"})
+});
+
 module.exports = courseRouter;
