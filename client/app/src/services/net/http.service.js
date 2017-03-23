@@ -158,6 +158,27 @@ export class HttpServiceProvider {
     });
     return this.request(request);
   }
+  patch(url,body,url_encoded){
+    let pUrl = url;
+    let pBody = body;
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    if (url_encoded) {
+      pUrl += HttpServiceProvider.urlEncode(pBody);
+      headers.set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+      pBody = null;
+    } else {
+      pBody = JSON.stringify(pBody);
+    }
+    // Create request
+    const request = new Request(pUrl, {
+      method: 'PATCH',
+      body: pBody,
+      headers: headers,
+      credentials: "same-origin"
+    });
+    return this.request(request);
+  }
 }
 // Export single instance
 export const http = new HttpServiceProvider();
