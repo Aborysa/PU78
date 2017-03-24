@@ -121,7 +121,8 @@ export class HttpServiceProvider {
     }
     // Create request
     const request = new Request(pUrl, { method: 'get',credentials: "same-origin" });
-    return this.request(request);
+    const clone = request.clone();
+    return this.request(request,clone);
   }
 
   static urlEncode(data) {
@@ -159,7 +160,8 @@ export class HttpServiceProvider {
       headers: headers,
       credentials: "same-origin"
     });
-    return this.request(request);
+    const clone = request.clone();
+    return this.request(request,clone);
   }
   patch(url,body,url_encoded){
     let pUrl = url;

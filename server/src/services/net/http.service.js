@@ -128,7 +128,8 @@ class HttpServiceProvider {
     }
     // Create request
     const request = new Request(pUrl, { method: 'get',credentials: "same-origin" });
-    return this.request(request);
+    const clone = request.clone();
+    return this.request(request,clone);
   }
 
   static urlEncode(data) {
@@ -166,7 +167,8 @@ class HttpServiceProvider {
       headers: headers,
       credentials: "same-origin"
     });
-    return this.request(request);
+    const clone = request.clone();
+    return this.request(request,clone);
   }
 }
 // Export default single instance, does not do auth
