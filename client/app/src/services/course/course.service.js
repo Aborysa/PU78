@@ -52,7 +52,9 @@ export class CourseServiceProvider{
       id: course.id,
       role: "student"
     }).subscribe((ret)=>{
-      this.refresh();
+      let courses = this.userCoursesList.slice();
+      courses.push(course);
+      this.userCourses = courses;
     });
   }
 
@@ -60,7 +62,7 @@ export class CourseServiceProvider{
     return http.delete(`${API_BASE}${API_USER_COURSES}`,{
       id: course.id
     }).subscribe((ret) => {
-      this.refresh();
+      this.userCourses = this.userCoursesList.slice().filter(e => e.id != course.id);
     });
 
   }
