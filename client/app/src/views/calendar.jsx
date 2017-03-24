@@ -62,6 +62,7 @@ export class CalendarView extends React.Component{
             style={{height: '300px'}}
             events={this.state.events}
             toolbar={false}
+            eventClick={(event) => this.openViewEventModal(event)}
           />
         </Col>
         <Col xs={12} md={10} mdOffset={1}>
