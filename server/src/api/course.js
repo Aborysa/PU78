@@ -2,12 +2,11 @@ const express = require("express");
 const courseRouter = express.Router({mergeParams:true});
 const database = require("../database.js");
 
-
-courseRouter.get('/courses', (req,res) => {
-  let tokenID = req.user.data.sub;
+courseRouter.get('/course', (req,res) => {
+  let search = req.query.q;
   database.connect((conn, cb) => {
     conn.query(
-      `select * from CourseUsers where idUser_fkCourseUsers = '${tokenID}';`,
+      `SELECT * FROM Courses WHERE idCourse LIKE '%${search}%' LIMIT 10;`,
       (_,rows) => {
         if (!_) {
           res.json(rows);
