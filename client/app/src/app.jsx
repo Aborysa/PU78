@@ -2,10 +2,8 @@
 import React from "react";
 import { render } from "react-dom";
 
-import {LoginView} from './login.jsx';
-import {CalendarView} from './calendar.jsx';
-import {NavBar} from './navBar.jsx';
-import {NotFound} from './404.jsx';
+import { LoginView, CalendarView, NotFound } from './views';
+import { NavBar } from './components/navBar.jsx';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
 
 import { userService } from 'services/user/user.service.js';
@@ -27,6 +25,7 @@ class App extends React.Component{
   }
   componentDidMount(){
     userService.getUser().subscribe(user => {
+      console.log("User",user);
       eventService.refresh();
       if(user && browserHistory.getCurrentLocation().pathname == "/"){
         browserHistory.push("/home");
@@ -39,7 +38,7 @@ class App extends React.Component{
     });
   }
   render() {
-    let nav = this.state.user ?   <NavBar currentUser={this.state.user} /> : null;
+    let nav = this.state.user ? <NavBar currentUser={this.state.user} /> : null;
     return (
       <div>
         {nav}

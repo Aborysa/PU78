@@ -42,7 +42,7 @@ export class ViewLectureModal extends React.Component{
   render() {
     let map = this.state.showMap ?
     <iframe
-      src="http://use.mazemap.com/embed.html?campusid=1&sharepoitype=poi&sharepoi=593"
+      src="http://use.mazemap.com/embed.html?campusid=1&sharepoitype=poi&sharepoi=0800.1"
       width="100%"
       height="420"
       frameBorder="0"

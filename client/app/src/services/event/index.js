@@ -1,2 +1,2 @@
-export {Event} from './event';
-export {eventService} from './event.service';
+export * from './event';
+export * from './event.service';

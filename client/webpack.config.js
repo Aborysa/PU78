@@ -6,7 +6,7 @@ var BUILD_DIR = path.resolve(APP_DIR, 'dist/');
 var SRC_DIR = path.resolve(APP_DIR, 'src/');
 
 var config = {
-  entry: path.resolve(SRC_DIR,'index.jsx'),
+  entry: path.resolve(SRC_DIR,'app.jsx'),
   output: {
     path: BUILD_DIR,
     publicPath: '/app/dist/',
