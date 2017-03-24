@@ -2,19 +2,77 @@ import React from "react";
 import {Col, Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button, Glyphicon, Tooltip} from "react-bootstrap";
 import { LinkContainer } from 'react-router-bootstrap';
 import { LiveSearch } from './liveSearch.jsx';
+import { courseService } from 'services/course';
+import { Subject } from 'rxjs';
+
+function filterRemove(e){
+  return this.indexOf(e)<0;
+}
 
 
 export class NavBar extends React.Component{
   constructor(props) {
     super(props);
+    this.searchSubject = new Subject();
+    this.state = {
+      searchCourses: [],
+      userCourses: []
+     }
+  }
+  componentDidMount(){
+    this.searchSubject.switchMap(e => courseService.searchCourse(e)).subscribe(e => {
+      this.setState(Object.assign(this.state, {
+        searchCourses: e
+      }));
+    });
+    courseService.getUserCourses().subscribe(e => {
+      this.setState(Object.assign(this.state, {
+        userCourses: e
+      }));
+    })
   }
   render() {
+    let subjectList = [];
+    let filtered = this.state.searchCourses.filter(
+      filterRemove,this.state.userCourses
+    );
+    for(let c of filtered) {
+      subjectList.push(
+        <MenuItem disabled key={c.id}>{c.id} : {c.name}
+          <div className="d-flex p-2">
+            <Button className="subjectButton" onClick={ () => courseService.addUserCourse(c)}>
+              <Glyphicon glyph="ok" className="glyphOk"/>
+            </Button>
+          </div>
+        </MenuItem>
+      );
+    }
+    let mySubjects = [];
+    for(let c of this.state.userCourses) {
+      mySubjects.push(
+        <MenuItem disabled key={c.id}>{c.id} : {c.name}
+          <div className="d-flex p-2">
+            <Button className="subjectButton" onClick={ () => courseService.removeUserCourse(c)}>
+              <Glyphicon glyph="remove" className="glyphRemove"/>
+            </Button>
+          </div>
+        </MenuItem>
+      );
+    }
+    let showMySubjects = mySubjects.length < 0 ?
+      {mySubjects}:
+      <MenuItem disabled>Ingen aktive fag, legg til fra listen</MenuItem>
+
+
     let userNav = this.props.currentUser ?
       <Navbar.Collapse>
         <Nav>
           <NavDropdown eventKey={2} title="Fag" id="basic-nav-dropdown">
-            <LiveSearch onChange={console.log}/>
-            <MenuItem divider />
+            <MenuItem disabled> Dine aktive fag:</MenuItem>
+            {showMySubjects}
+            <LiveSearch onChange={e => this.searchSubject.next(e)}/>
+            {subjectList}
+
           </NavDropdown>
         </Nav>
         <Navbar.Text pullRight>

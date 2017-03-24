@@ -2,7 +2,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { API_BASE, API_COURSES, API_USER_COURSES  } from 'common/constants';
 import { http } from 'services/net';
 
-import { jsonToCourse } from 'course';
+import { jsonToCourse } from './course.js';
 
 export class CourseServiceProvider{
   constructor(){
@@ -16,23 +16,24 @@ export class CourseServiceProvider{
       }).map(r => {
         let ret = [];
         for(let c of r){
-          ret.push(jsonToCourse(r));
+          ret.push(jsonToCourse(c));
         }
         return ret;
       });
     }
+    return Observable.of([]);
   }
   getUserCourses(){
     return http.get(`${API_BASE}${API_USER_COURSES}`)
       .map(r => {
         let ret = [];
         for(let c of r){
-          ret.push(jsonToCourse(r));
+          ret.push(jsonToCourse(c));
         }
         return ret;
       });
   }
-  
+
   addUserCourse(course){
     return http.post(`${API_BASE}${API_USER_COURSES}`,{
       id: course.id,
@@ -44,10 +45,9 @@ export class CourseServiceProvider{
     return http.delete(`${API_BASE}${API_USER_COURSES}`,{
       id: course.id
     });
-    
+
   }
 }
 
 
 export const courseService = new CourseServiceProvider();
-

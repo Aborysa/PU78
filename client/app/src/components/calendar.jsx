@@ -22,9 +22,9 @@ export class Calendar extends React.Component {
       defaultView: "agendaDay",
       //Sets the header of the calendar
       header: {
-        left:   'title today prev,next',
+        left:   'title',
         center: '',
-        right:  'month agendaDay agendaWeek'
+        right:  'today prev,next month agendaDay agendaWeek'
       },
       //We want to display week numbers
       weekNumbers: true,
