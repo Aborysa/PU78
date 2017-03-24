@@ -15,3 +15,8 @@ hr.sepCals{
 .triggerButton{
   visibility: hidden;
 }
+.fc-day-number:hover{
+  cursor: hand;
+  cursor: pointer;
+  color: rgb(58, 135, 173);
+}

@@ -23,21 +23,33 @@ export class Calendar extends React.Component {
         right:  'today prev,next month agendaDay agendaWeek'
       },
       eventDrop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
-      eventResize: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view)
+      eventResize: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
+      dayClick: (date,jsEvent,view) => {
+        //We only want the day number to change date
+        if($(jsEvent.target).hasClass("fc-day-number"))
+          this.selectDate(date,jsEvent,view);
+
+      }
     });
     this.init = true;
   }
   eventChanged(event, jsEvent, ui, view){
-    console.log("Event changed",event,moment(event.start.format('YYYY/MM/DD HH:mm:ss')));
     eventService.updateEvent(event.id,calendarToEvent(event));
   }
+  selectDate(date,jsEvent,view){
+    console.log("event",jsEvent);
+    const { calendar } = this.refs;
+    $(calendar).fullCalendar('changeView', 'agendaDay')
+    $(calendar).fullCalendar('gotoDate',date);
+  }
+
   componentWillReceiveProps(nextProps){
     const { calendar } = this.refs;
     let eventDisplay = [];
     for(let e of nextProps.events){
       eventDisplay.push(e.calendarEvent);
     }
-    $(calendar).fullCalendar('removeEvents');
+    $(calendar).fullCalendar('removeEvents')
     $(calendar).fullCalendar('addEventSource', eventDisplay);
   }
 
