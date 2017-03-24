@@ -22,10 +22,10 @@ courseRouter.get('/courses', (req,res) => {
 
 courseRouter.post('/events', (req, res) => {
   let tokenID = req.user.data.sub;
-  let courseid = req.body.course;
-  let role = req.body.courserole;
+  let courseID = req.body.id;
+  let role = req.body.role;
   database.connect((conn, cb) => {
-    conn.query(`INSERT INTO CourseUsers(idUser_fkCourseUsers, idCourse_fkCourseUsers, courseUserRole) VALUES('${tokenID}', '${courseid}', '${role}');`,(_) => {
+    conn.query(`INSERT INTO CourseUsers(idUser_fkCourseUsers, idCourse_fkCourseUsers, courseUserRole) VALUES('${tokenID}', '${courseID}', '${role}');`,(_) => {
       console.log(_);
     })
   });
