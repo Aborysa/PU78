@@ -14,11 +14,13 @@ export const jsonToEvent = (data) => {
 }
 
 export const calendarToEvent = (o) => {
+  let future24 = moment(o.start,'YYYY/MM/DD HH:mm:ss').add('days',1).format('YYYY/MM/DD HH:mm:ss');
+  let future2 = moment(o.start,'YYYY/MM/DD HH:mm:ss').add('hours',2).format('YYYY/MM/DD HH:mm:ss');
   return new Event(
     o.id,
     o.title,
     o.start.format('YYYY/MM/DD HH:mm:ss'),
-    o.end.format('YYYY/MM/DD HH:mm:ss'),
+    o.end ? o.end.format('YYYY/MM/DD HH:mm:ss') : (o.allDay ? future24 : future2),
     o.desc,
     o.editable
   )
@@ -65,7 +67,7 @@ export class Event{
       id: this.id,
       editable: this.editable,
       desc: this.desc,
-      allDay: false//moment.duration(this.end - this.start).days() > 0
+      allDay: moment.duration(this.end - this.start).days() > 0
     }
   }
   get serverEvent(){

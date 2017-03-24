@@ -77,6 +77,7 @@ export class HttpServiceProvider {
   }
 
   handleResponse(r, req) {
+    console.log("Handling response");
     /* TODO: handle 503(service unavailable) responses
       adjust delay up when a 503 responses happens
       and retry

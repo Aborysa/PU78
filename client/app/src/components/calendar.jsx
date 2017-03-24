@@ -28,7 +28,7 @@ export class Calendar extends React.Component {
     this.init = true;
   }
   eventChanged(event, jsEvent, ui, view){
-    console.log("Event changed",event,calendarToEvent(event),moment(event.start.format('YYYY/MM/DD HH:mm:ss')));
+    console.log("Event changed",event,moment(event.start.format('YYYY/MM/DD HH:mm:ss')));
     eventService.updateEvent(event.id,calendarToEvent(event));
   }
   componentWillReceiveProps(nextProps){
