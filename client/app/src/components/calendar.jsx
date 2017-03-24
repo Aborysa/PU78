@@ -18,7 +18,7 @@ export class Calendar extends React.Component {
       editable: true,
       //first day set to 1 (monday American standard)
       firstDay: 1,
-      //Sets the default view to agendaDay, might want to make month the default
+      eventLimit: 5,
       defaultView: "agendaDay",
       //Sets the header of the calendar
       header: {
@@ -33,22 +33,22 @@ export class Calendar extends React.Component {
       //Set up event handling for both resizing events and moving them around
       eventDrop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
       eventResize: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
-     
+
     });
   }
-  
+
   eventChanged(event, jsEvent, ui, view){
     //When an event changes we need cascade the change
     eventService.updateEvent(event.id,calendarToEvent(event));
   }
-  
+
   selectDate(date,jsEvent,view){
     //Helper method for selecting a specific date
     const { calendar } = this.refs;
     $(calendar).fullCalendar('changeView', 'agendaDay')
     $(calendar).fullCalendar('gotoDate',date);
   }
-  
+
   selectWeek(week){
     //Helper method for selecting a specific week
     const { calendar } = this.refs;
