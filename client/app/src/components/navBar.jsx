@@ -1,6 +1,7 @@
 import React from "react";
 import {Col, Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button, Glyphicon, Tooltip} from "react-bootstrap";
 import { LinkContainer } from 'react-router-bootstrap';
+import { LiveSearch } from './liveSearch.jsx';
 
 
 export class NavBar extends React.Component{
@@ -12,9 +13,7 @@ export class NavBar extends React.Component{
       <Navbar.Collapse>
         <Nav>
           <NavDropdown eventKey={2} title="Fag" id="basic-nav-dropdown">
-            <MenuItem eventKey={2.1} href="/fghj">Action</MenuItem>
-            <MenuItem eventKey={2.2}>Another action</MenuItem>
-            <MenuItem eventKey={2.3}>Something else here</MenuItem>
+            <LiveSearch onChange={console.log}/>
             <MenuItem divider />
           </NavDropdown>
         </Nav>
@@ -48,7 +47,3 @@ export class NavBar extends React.Component{
     )
   }
 }
-
-const tooltipHome = (
-  <Tooltip id="tooltip"><strong>Holy guacamole!</strong> Check this info.</Tooltip>
-);
