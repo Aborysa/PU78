@@ -15,15 +15,16 @@ export class HttpServiceProvider {
     this.waitingForToken = false;
     this.requestSubject = new Subject();
     this.count = 0;
-    // Subject for handling requests, each request is seperated by 100ms
+    // Subject for handling requests, each request is seperated by 50ms
     // Should be made for dynamic
     // Prevents 'DOS' protection
     this.requestSubject
       // Zip each request with an interval stream
-      .zip(Observable.interval(100).skipUntil(this.requestSubject), (a, b) => a)
+      .zip(Observable.interval(50).skipUntil(this.requestSubject), (a, b) => a)
       // Subscrive to this stream
       .subscribe((requestPair) => {
         // preforme request
+        console.log("Performing request",requestPair);
         this.count++;
         Observable.fromPromise(fetch(requestPair.request))
           /*
@@ -76,6 +77,7 @@ export class HttpServiceProvider {
   }
 
   handleResponse(r, req) {
+    console.log("Handling response");
     /* TODO: handle 503(service unavailable) responses
       adjust delay up when a 503 responses happens
       and retry
@@ -98,9 +100,10 @@ export class HttpServiceProvider {
    * @param {Request} url
    * @return Observable<{}>
    */
-  request(request) {
+  request(request,ttype,token) {
+    console.log("New request",request);
     // Add token to request
-    request.headers.set('Authorization', `Bearer ${this.auth_token}`);
+    request.headers.set('Authorization', `${ttype || "Bearer"} ${token || this.auth_token}`);
     const resolver = new Subject();
     // Push request into request 'stream'/queue
     this.requestSubject.next({ request, subject: resolver });
@@ -118,7 +121,8 @@ export class HttpServiceProvider {
     }
     // Create request
     const request = new Request(pUrl, { method: 'get',credentials: "same-origin" });
-    return this.request(request);
+    const clone = request.clone();
+    return this.request(request,clone);
   }
 
   static urlEncode(data) {
@@ -152,6 +156,28 @@ export class HttpServiceProvider {
     // Create request
     const request = new Request(pUrl, {
       method: 'POST',
+      body: pBody,
+      headers: headers,
+      credentials: "same-origin"
+    });
+    const clone = request.clone();
+    return this.request(request,clone);
+  }
+  patch(url,body,url_encoded){
+    let pUrl = url;
+    let pBody = body;
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    if (url_encoded) {
+      pUrl += HttpServiceProvider.urlEncode(pBody);
+      headers.set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+      pBody = null;
+    } else {
+      pBody = JSON.stringify(pBody);
+    }
+    // Create request
+    const request = new Request(pUrl, {
+      method: 'PATCH',
       body: pBody,
       headers: headers,
       credentials: "same-origin"

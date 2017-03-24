@@ -6,13 +6,14 @@ import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form,
 import Datetime from 'react-datetime';
 import { eventService,Event } from 'services/event';
 import { AddEventModal, ViewLectureModal } from 'components/modals';
+import { Calendar } from 'components/calendar.jsx';
+import { ListCalendar } from 'components/listCalendar.jsx';
 
 moment.locale('nb');
 BigCalendar.momentLocalizer(moment);
 
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
 
-require('style!css!react-big-calendar/lib/css/react-big-calendar.css');
 require('style!css!react-datetime/css/react-datetime.css');
 
 export class CalendarView extends React.Component{
@@ -57,18 +58,13 @@ export class CalendarView extends React.Component{
     return (
       <div>
         <Col xs={12} md={10} mdOffset={1}>
-          <BigCalendar
-             style={{height: '650px'}}
-             events={this.state.events}
-             views={['month', 'week', 'day']}
-             defaultView={'week'}
-             popup={true}
-             scrollToTime={starttime}
-             onSelectEvent={(e) => this.openViewEventModal(e)}
-             onSelectSlot={(slotInfo) => alert(
-              `selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
-              `\nend: ${slotInfo.end.toLocaleString()}`)}
+          <Calendar
+            style={{height: '300px'}}
+            events={this.state.events}
+            toolbar={false}
           />
+        </Col>
+        <Col xs={12} md={10} mdOffset={1}>
           <AddEventModal />
           {viewEventModal}
         </Col>
@@ -81,15 +77,11 @@ export class CalendarView extends React.Component{
             <Button>Øving</Button>
             <Button>Annet</Button>
           </ButtonGroup>
-        </Col>
-        <Col xs={12} md={10} mdOffset={1}>
-          <BigCalendar
+          <ListCalendar
             style={{height: '300px'}}
             events={this.state.events}
-            views={['agenda']}
-            defaultView={'agenda'}
             toolbar={false}
-          />
+            />
         </Col>
       </div>
     )
