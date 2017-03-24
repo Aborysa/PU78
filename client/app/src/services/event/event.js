@@ -74,8 +74,8 @@ export class Event{
     return {
       title: this.title,
       desc: this.desc,
-      startDate: this.start.format('YYYY/MM/DD HH:mm:ss'),
-      endDate: this.end.format('YYYY/MM/DD HH:mm:ss')
+      startDate: this.start.utc().format('YYYY/MM/DD HH:mm:ss z'),
+      endDate: this.end.utc().format('YYYY/MM/DD HH:mm:ss z')
     }
   }
   get patchEvent(){
