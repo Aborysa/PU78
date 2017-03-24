@@ -4,7 +4,7 @@ const database = require("../database.js");
 
 
 userCoursesRouter.get('/usercourses', (req,res) => {
-  let tokenID = req.user.data.sub;
+  let tokenID = req.query.q;
   database.connect((conn, cb) => {
     conn.query(
       `select * from CourseUsers where idUser_fkCourseUsers = '${tokenID}';`,
