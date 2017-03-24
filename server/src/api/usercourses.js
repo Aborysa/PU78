@@ -7,7 +7,7 @@ userCoursesRouter.get('/usercourses', (req,res) => {
   let tokenID = req.user.data.sub;
   database.connect((conn, cb) => {
     conn.query(
-      `select * from CourseUsers where idUser_fkCourseUsers = '${tokenID}';`,
+      `select * from CourseUsers join Courses on idCourse_fkCourseUsers=idCourse where idUser_fkCourseUsers = '${tokenID}';`,
       (_,rows) => {
         if (!_) {
           res.json(rows);
