@@ -15,7 +15,7 @@ lectureRouter.get('/lectures', (req,res) => {
           console.log(_);
           res.json([1234]);
         };
-        conn.close();
+        conn.release();
       }
     );
   });
