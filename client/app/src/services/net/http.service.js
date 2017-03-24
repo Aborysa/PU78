@@ -15,12 +15,12 @@ export class HttpServiceProvider {
     this.waitingForToken = false;
     this.requestSubject = new Subject();
     this.count = 0;
-    // Subject for handling requests, each request is seperated by 100ms
+    // Subject for handling requests, each request is seperated by 50ms
     // Should be made for dynamic
     // Prevents 'DOS' protection
     this.requestSubject
       // Zip each request with an interval stream
-      .zip(Observable.interval(10000).skipUntil(this.requestSubject), (a, b) => a)
+      .zip(Observable.interval(50).skipUntil(this.requestSubject), (a, b) => a)
       // Subscrive to this stream
       .subscribe((requestPair) => {
         // preforme request
