@@ -15,6 +15,7 @@ userCoursesRouter.get('/usercourses', (req,res) => {
           console.log(_);
           res.json([1234]);
         };
+        conn.close();
       }
     );
   });
@@ -27,6 +28,7 @@ userCoursesRouter.post('/usercourses', (req, res) => {
   database.connect((conn, cb) => {
     conn.query(`INSERT INTO CourseUsers(idUser_fkCourseUsers, idCourse_fkCourseUsers, courseUserRole) VALUES('${tokenID}', '${courseID}', '${role}');`,(_) => {
       console.log(_);
+      conn.close();
     })
   });
   res.json({status:"ok"})
@@ -38,6 +40,7 @@ userCoursesRouter.delete('/usercourses', (req, res) => {
   database.connect((conn, cb) => {
     conn.query(`DELETE FROM CourseUsers WHERE idUser_fkCourseUsers='${tokenID}' AND idCourse_fkCourseUsers='${courseID}';`,(_) => {
       console.log(_);
+      conn.close();
     })
   });
   res.json({status:"ok"})

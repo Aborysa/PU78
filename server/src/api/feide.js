@@ -56,7 +56,7 @@ feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"cal
       if (rows[0].userexists == 0) {
         conn.query(`INSERT INTO Users(idUsersFeide) VALUES ('${tokenID}');`);
       }
-      conn.close;
+      conn.close();
     });
   });
   res.redirect('/home');
