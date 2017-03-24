@@ -13,6 +13,7 @@ export class CourseServiceProvider{
 
   set userCourses(list){
     this.userCoursesList = list;
+    console.log("Next userCourses",list);
     this.userCourseSubject.next(list);
   }
   searchCourse(searchString){
@@ -31,7 +32,8 @@ export class CourseServiceProvider{
   }
 
   refresh(){
-    return http.get(`${API_BASE}${API_USER_COURSES}`)
+    console.log("Refresh courses");
+    http.get(`${API_BASE}${API_USER_COURSES}`)
       .subscribe(r => {
         let ret = [];
         for(let c of r){

@@ -26,6 +26,7 @@ export class NavBar extends React.Component{
       }));
     });
     courseService.getUserCourses().subscribe(e => {
+      console.log("User courses updated",e);
       this.setState(Object.assign(this.state, {
         userCourses: e
       }));
@@ -34,7 +35,7 @@ export class NavBar extends React.Component{
   render() {
     let subjectList = [];
     let filtered = this.state.searchCourses.filter(
-      filterRemove,this.state.userCourses
+      filterRemove,this.state.userCourses.slice()
     );
     for(let c of filtered) {
       subjectList.push(
@@ -52,15 +53,15 @@ export class NavBar extends React.Component{
       mySubjects.push(
         <MenuItem disabled key={c.id}>{c.id} : {c.name}
           <div className="d-flex p-2">
-            <Button className="subjectButton" onClick={ () => courseService.removeUserCourse(c)}>
+            <Button className="subjectButton" onClick={ () => courseService.deleteUserCourse(c)}>
               <Glyphicon glyph="remove" className="glyphRemove"/>
             </Button>
           </div>
         </MenuItem>
       );
     }
-    let showMySubjects = mySubjects.length < 0 ?
-      {mySubjects}:
+    let showMySubjects = mySubjects.length > 0 ?
+      mySubjects :
       <MenuItem disabled>Ingen aktive fag, legg til fra listen</MenuItem>
 
 

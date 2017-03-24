@@ -27,6 +27,7 @@ class App extends React.Component{
     userService.getUser().subscribe(user => {
       console.log("User",user);
       eventService.refresh();
+      console.log("Course Service refresh");
       courseService.refresh();
       courseService.getUserCourses().subscribe(c => {
         console.log(c);
