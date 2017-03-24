@@ -1,9 +1,9 @@
 const express = require("express");
-const courseRouter = express.Router({mergeParams:true});
+const userCoursesRouter = express.Router({mergeParams:true});
 const database = require("../database.js");
 
 
-courseRouter.get('/courses', (req,res) => {
+userCoursesRouter.get('/usercourses', (req,res) => {
   let tokenID = req.user.data.sub;
   database.connect((conn, cb) => {
     conn.query(
@@ -20,7 +20,7 @@ courseRouter.get('/courses', (req,res) => {
   });
 });
 
-courseRouter.post('/events', (req, res) => {
+userCoursesRouter.post('/usercourses', (req, res) => {
   let tokenID = req.user.data.sub;
   let courseID = req.body.id;
   let role = req.body.role;
@@ -32,4 +32,4 @@ courseRouter.post('/events', (req, res) => {
   res.json({status:"ok"})
 });
 
-module.exports = courseRouter;
+module.exports = userCoursesRouter;
