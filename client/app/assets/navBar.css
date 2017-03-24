@@ -24,3 +24,12 @@
 .navbar-inverse .navbar-text {
     color: lightgray !important;
 }
+.glyphOK{
+  color: green;
+}
+.glyphRemove{
+  color: red;
+}
+.subjectButton{
+  
+}
