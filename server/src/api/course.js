@@ -3,7 +3,7 @@ const courseRouter = express.Router({mergeParams:true});
 const database = require("../database.js");
 
 courseRouter.get('/course', (req,res) => {
-  let search = req.body.search;
+  let search = req.query.q;
   database.connect((conn, cb) => {
     conn.query(
       `SELECT * FROM Courses WHERE idCourse LIKE '%${search}%' LIMIT 10;`,
