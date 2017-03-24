@@ -15,7 +15,9 @@ export class EventServiceProvider{
   getEvents(){
     return this.eventSubject.asObservable();
   }
-
+  getEvent(id){
+    return this._eventCache[id];
+  }
   set events(events){
     this._events = events;
     this.eventSubject.next(events);

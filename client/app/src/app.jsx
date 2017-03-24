@@ -8,7 +8,7 @@ import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 're
 
 import { userService } from 'services/user/user.service.js';
 import { eventService } from 'services/event';
-
+import { courseService } from 'services/course';
 
 const routes = (
   <Route component={App}>
@@ -27,6 +27,10 @@ class App extends React.Component{
     userService.getUser().subscribe(user => {
       console.log("User",user);
       eventService.refresh();
+      courseService.refresh();
+      courseService.getUserCourses().subscribe(c => {
+        console.log(c);
+      });
       if(user && browserHistory.getCurrentLocation().pathname == "/"){
         browserHistory.push("/home");
       }else if(!user){

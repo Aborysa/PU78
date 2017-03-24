@@ -6,9 +6,15 @@ import { jsonToCourse } from './course.js';
 
 export class CourseServiceProvider{
   constructor(){
+    this.userCourseSubject = new ReplaySubject();
+    this.userCoursesList = [];
   }
 
 
+  set userCourses(list){
+    this.userCoursesList = list;
+    this.userCourseSubject.next(list);
+  }
   searchCourse(searchString){
     if(searchString){
       return http.get(`${API_BASE}${API_COURSES}`,{
@@ -23,27 +29,36 @@ export class CourseServiceProvider{
     }
     return Observable.of([]);
   }
-  getUserCourses(){
+
+  refresh(){
     return http.get(`${API_BASE}${API_USER_COURSES}`)
-      .map(r => {
+      .subscribe(r => {
         let ret = [];
         for(let c of r){
           ret.push(jsonToCourse(c));
         }
-        return ret;
+        this.userCourses = ret;
       });
+  }
+
+  getUserCourses(){
+    return this.userCourseSubject.asObservable();
   }
 
   addUserCourse(course){
     return http.post(`${API_BASE}${API_USER_COURSES}`,{
       id: course.id,
       role: "student"
+    }).subscribe((ret)=>{
+      this.refresh();
     });
   }
 
   deleteUserCourse(course){
     return http.delete(`${API_BASE}${API_USER_COURSES}`,{
       id: course.id
+    }).subscribe((ret) => {
+      this.refresh();
     });
 
   }

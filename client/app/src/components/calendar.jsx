@@ -33,7 +33,7 @@ export class Calendar extends React.Component {
       //Set up event handling for both resizing events and moving them around
       eventDrop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
       eventResize: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
-
+      eventClick: (event) => this.props.eventClick(eventService.getEvent(event.id))
     });
   }
 
