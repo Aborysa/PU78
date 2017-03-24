@@ -32,4 +32,15 @@ userCoursesRouter.post('/usercourses', (req, res) => {
   res.json({status:"ok"})
 });
 
+userCoursesRouter.delete('/usercourses', (req, res) => {
+  let tokenID = req.user.data.sub;
+  let courseID = req.body.id;
+  database.connect((conn, cb) => {
+    conn.query(`DELETE FROM CourseUsers WHERE idUser_fkCourseUsers='${tokenID}' AND idCourse_fkCourseUsers='${courseID}';`,(_) => {
+      console.log(_);
+    })
+  });
+  res.json({status:"ok"})
+})
+
 module.exports = userCoursesRouter;
