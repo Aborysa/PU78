@@ -65,16 +65,12 @@ export class ViewLectureModal extends React.Component{
           </Modal.Header>
           <Modal.Body>
             <Form horizontal>
-              <h3>Fag: </h3>
-              <p>testtesttest</p>
-            </Form>
-            <Form>
-              <h3>Rom: </h3>
-              <p>fagfagfagfagfag</p>
+              <h3>Beskrivelse: </h3>
+              <p>{this.props.event ? (this.props.event.desc || "Ingen beskrivelse gitt") : "None" }</p>
             </Form>
             <Form>
               <h3>Tidspunkt: </h3>
-              <p>Tidtiditditid</p>
+              <p>{this.props.event ? this.props.event.start.format('HH:mm:ss') : "None"}</p>
             </Form>
             {map}
           </Modal.Body>
