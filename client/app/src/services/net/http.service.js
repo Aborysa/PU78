@@ -182,7 +182,30 @@ export class HttpServiceProvider {
       headers: headers,
       credentials: "same-origin"
     });
-    return this.request(request);
+    const clone = request.clone();
+    return this.request(request,clone);
+  }
+  delete(url,body,url_encoded){
+    let pUrl = url;
+    let pBody = body;
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    if (url_encoded) {
+      pUrl += HttpServiceProvider.urlEncode(pBody);
+      headers.set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+      pBody = null;
+    } else {
+      pBody = JSON.stringify(pBody);
+    }
+    // Create request
+    const request = new Request(pUrl, {
+      method: 'DELETE',
+      body: pBody,
+      headers: headers,
+      credentials: "same-origin"
+    });
+    const clone = request.clone();
+    return this.request(request,clone);
   }
 }
 // Export single instance

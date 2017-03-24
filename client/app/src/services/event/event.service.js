@@ -24,7 +24,6 @@ export class EventServiceProvider{
     return this._events;
   }
   refresh(){
-    console.log("Refresh");
     http.get(`${API_BASE}${API_EVENTS}`)
       .map(ret => {
         let events = [];
