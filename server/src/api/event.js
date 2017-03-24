@@ -21,12 +21,30 @@ eventRouter.get('/events', (req, res) => {
 eventRouter.post('/events', (req, res) => {
   let tokenID = req.user.data.sub;
   let title = req.body.title;
-  let decription = req.body.desc;
+  let description = req.body.desc;
   let type = "personal";
   let start = req.body.startDate.slice(0,19).replace("T"," ");
   let end = req.body.endDate.slice(0,19).replace("T"," ");
   database.connect((conn, cb) => {
-    conn.query(`INSERT INTO Events(eventTitle, eventDesc, eventType, eventStart, eventEnd, idUsersFeide_fkEvents) VALUES('${title}', '${decription}', '${type}', '${start}', '${end}', '${tokenID}');`,(_) => {
+    conn.query(`
+      INSERT INTO Events(eventTitle, eventDesc, eventType, eventStart, eventEnd, idUsersFeide_fkEvents) VALUES('${title}', '${description}', '${type}', '${start}', '${end}', '${tokenID}');`,
+      (_, result) => {
+        console.log(_);
+        res.json({status:"ok", id:result.insertId})
+      });
+  });
+});
+
+eventRouter.patch('/events', (req, res) => {
+  let tokenID = req.user.data.sub;
+  let eventID = req.body.id;
+  let title = req.body.title;
+  let description = req.body.desc;
+  let type = "personal";
+  let start = req.body.startDate.slice(0,19).replace("T"," ");
+  let end = req.body.endDate.slice(0,19).replace("T"," ");
+  database.connect((conn, cb) => {
+    conn.query(`UPDATE Events SET eventTitle='${title}', eventDesc='${description}', eventType='${type}', eventStart='${start}', eventEnd='${end}', idUsersFeide_fkEvents='${tokenID}' WHERE idEvents='${eventID}';`,(_) => {
       console.log(_);
     })
   });
