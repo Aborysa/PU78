@@ -35,7 +35,15 @@ export class NavBar extends React.Component{
   render() {
     let subjectList = [];
     let filtered = this.state.searchCourses.filter(
-      filterRemove,this.state.userCourses.slice()
+      (e) => {
+        let isIn = false;
+        for(let e2 of this.state.userCourses){
+          if(e2.id == e.id){
+            return false;
+          }
+        }
+        return true;
+      }
     );
     for(let c of filtered) {
       subjectList.push(
