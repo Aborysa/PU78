@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest",
+    "test-cov": "--coverage && codecov",
     "build": "webpack",
     "watch": "webpack -w",
     "dev": "webpack-dev-server --inline --hot"
