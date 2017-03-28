@@ -1,4 +1,16 @@
 pipeline:
+  tests:
+    image: node
+    commands:
+      - cd client
+      - npm install
+      - npm install -g codecov
+      - npm test
+      - codecov -t ${UPLOAD_TOKEN}
+    when:
+      event: push
+      branch: master
+
   deploy:
     image: appleboy/drone-ssh
     host: studynator.me

@@ -21,6 +21,10 @@ var config = {
           APP_DIR
         ],
         loader : 'babel'
+      },
+      {
+        test: /\.test.jsx?/,
+        loader: 'ignore-loader'
       }
     ]
   },
