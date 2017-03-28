@@ -12,7 +12,7 @@ pipeline:
       - git checkout master
       - git pull
       - git checkout server
-      - git merge master
+      - git merge master -m "Merge"
       - cd ~/PU78/client
       - npm install
       - npm build  
