@@ -16,6 +16,7 @@ export class LoginView extends React.Component{
           <Col md={8} mdOffset={2}>
           	<p>Studynator hjelper deg å strukturere skoledagene dine, og gir deg mulighet til å fokusere på skolearbeid</p>
           	<p>Logg inn via Feide nå, for å gjøre livet ditt strukturert</p>
+            <p>Building does in fact work!</p>
           	<Button href="/api/v1/login" bsStyle="primary" bsSize="large"><Glyphicon glyph="user" /> Logg inn</Button>
           </Col>
         </Jumbotron>
