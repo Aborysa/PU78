@@ -1,4 +1,4 @@
-import { Event, jsonToEvent } from "event.js";
+import { Event, jsonToEvent } from "./event.js";
 
 
 test('Creates an Event from a json object', () => {
@@ -9,7 +9,7 @@ test('Creates an Event from a json object', () => {
     eventEnd: "29/03/2017",
     eventDesc: "This event is in end of march"
   }
-  let event = jsonToEvent();
+  let event = jsonToEvent(source);
   expect(event.id).toBe(source.idEvents);
   expect(event.title).toBe(source.eventTitle);
   expect(event.desc).toBe(source.eventDesc);
