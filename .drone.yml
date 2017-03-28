@@ -9,7 +9,6 @@ pipeline:
       - codecov -t ${UPLOAD_TOKEN}
     when:
       event: push
-      branch: master
 
   deploy:
     image: appleboy/drone-ssh
