@@ -3,7 +3,7 @@ pipeline:
     image: appleboy/drone-ssh
     host: studynator.me
     user: root
-    key_path: ~/.ssh/id_rsa
+    key: ${SSH_KEY}
     port: 22
     when:
       event: push
