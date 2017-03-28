@@ -1,4 +1,11 @@
 pipeline:
+  tests:
+    image: node
+    commands:
+      - cd client
+      - npm install
+      - npm test
+      
   deploy:
     image: appleboy/drone-ssh
     host: studynator.me
