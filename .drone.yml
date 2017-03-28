@@ -7,7 +7,8 @@ pipeline:
     image: node
     commands:
       - cd client
-      - cp -a /drone/node_modules /root 2>/dev/null || :
+      - mkdir -p /drone/node_modules
+      - cp -a /drone/node_modules /root
       - rm -rf /drone/node_modules
       - npm install -g
       - npm install -g codecov
