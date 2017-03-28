@@ -10,7 +10,7 @@ pipeline:
       - mkdir -p /drone/node_modules
       - cp -a /drone/node_modules /root
       - rm -rf /drone/node_modules
-      - npm install -g
+      - npm install
       - npm install -g codecov
       - npm run test-cov
       - codecov -t ${UPLOAD_TOKEN}
