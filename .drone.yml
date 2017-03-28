@@ -1,13 +1,16 @@
 pipeline:
   deploy:
-    image: plugins/ssh
+    image: appleboy/drone-ssh
     host: studynator.me
     user: root
+    username: root
     port: 22
+    key: ${SSH_KEY}
     when:
       event: push
       branch: master
     script:
+      - echo ${TEST}
       - cd ~/PU78
       - git checkout master
       - git pull
