@@ -1,8 +1,9 @@
 pipeline:
   deployment:
-    image: plugins/ssh
+    image: appleboy/drone-ssh
     host: studynator.me
     user: root
+    key_path: ~/.ssh/id_rsa
     port: 22
     when:
       event: push
