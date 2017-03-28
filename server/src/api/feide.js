@@ -50,9 +50,7 @@ feideAPI.get('/login', passport.authenticate('passport-openid-connect', {"succes
 feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"callback": true}),(req,res)=>{
   let tokenID = req.user.data.sub;
   database.connect((conn, cb) => {
-    console.log("connected")
     conn.query(`SELECT EXISTS(SELECT * FROM Users WHERE idUsersFeide ='${tokenID}') AS userexists;`, (_,rows) =>{
-      console.log(rows[0].userexists);
       if (rows[0].userexists == 0) {
         conn.query(`INSERT INTO Users(idUsersFeide) VALUES ('${tokenID}');`);
       }
