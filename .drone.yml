@@ -16,7 +16,7 @@ pipeline:
       - codecov -t ${UPLOAD_TOKEN}
       - cp -a ./node_modules /drone
     when:
-      event: push
+      event: push, pull_request
 
   deploy:
     image: appleboy/drone-ssh
