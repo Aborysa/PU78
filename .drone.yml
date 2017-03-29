@@ -8,13 +8,13 @@ pipeline:
     commands:
       - cd client
       - mkdir -p /drone/node_modules
-      - cp -a /drone/node_modules /root
+      - cp -a /drone/node_modules ./
       - rm -rf /drone/node_modules
       - npm install
       - npm install -g codecov
       - npm run test-cov
       - codecov -t ${UPLOAD_TOKEN}
-      - cp -a /root/node_modules /drone
+      - cp -a ./node_modules /drone
     when:
       event: push
 
