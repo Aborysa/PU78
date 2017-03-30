@@ -1,0 +1,54 @@
+pipeline:
+  restore-cache:
+    image: drillster/drone-volume-cache
+    when:
+      event:
+        - push
+    restore: true
+    mount:
+      - ./node_modules
+    volumes:
+      - /tmp/cache:/cache
+
+  tests:
+    image: node
+    commands:
+      - npm install --quiet
+      - npm install -g codecov
+      - npm run test-cov
+      - codecov -t ${UPLOAD_TOKEN}
+    when:
+      event: 
+        - push 
+        
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    when:
+      event:
+        - push
+        
+    rebuild: true
+    mount:
+      - ./node_modules
+    
+    volumes:
+      - /tmp/cache:/cache
+
+  deploy:
+    image: appleboy/drone-ssh
+    host: studynator.me
+    user: root
+    username: root
+    port: 22
+    key: ${SSH_KEY}
+    when:
+      event: push
+      branch: master
+    script:
+      - cd ~/PU78
+      - git checkout master
+      - git pull
+      - git checkout server
+      - git merge master -m "Merge"
+      - npm install
+      - npm run build  

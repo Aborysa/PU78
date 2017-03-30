@@ -13,6 +13,7 @@ export class CourseServiceProvider{
 
   set userCourses(list){
     this.userCoursesList = list;
+    console.log("Next userCourses",list);
     this.userCourseSubject.next(list);
   }
   searchCourse(searchString){
@@ -31,7 +32,8 @@ export class CourseServiceProvider{
   }
 
   refresh(){
-    return http.get(`${API_BASE}${API_USER_COURSES}`)
+    console.log("Refresh courses");
+    http.get(`${API_BASE}${API_USER_COURSES}`)
       .subscribe(r => {
         let ret = [];
         for(let c of r){
@@ -50,7 +52,9 @@ export class CourseServiceProvider{
       id: course.id,
       role: "student"
     }).subscribe((ret)=>{
-      this.refresh();
+      let courses = this.userCoursesList.slice();
+      courses.push(course);
+      this.userCourses = courses;
     });
   }
 
@@ -58,7 +62,7 @@ export class CourseServiceProvider{
     return http.delete(`${API_BASE}${API_USER_COURSES}`,{
       id: course.id
     }).subscribe((ret) => {
-      this.refresh();
+      this.userCourses = this.userCoursesList.slice().filter(e => e.id != course.id);
     });
 
   }

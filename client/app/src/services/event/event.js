@@ -1,4 +1,6 @@
 
+import moment from 'moment';
+
 
 
 
@@ -59,16 +61,18 @@ export class Event{
   get editable(){
     return this._editable;
   }
-  get calendarEvent(){
-    return {
+  get calendarEvents(){
+    return [{
       title: this.title,
       start: this.start,
       end: this.end,
       id: this.id,
       editable: this.editable,
       desc: this.desc,
-      allDay: moment.duration(this.end - this.start).days() > 0
-    }
+      allDay: moment.duration(this.end - this.start).days() > 0,
+      type: this._type,
+      parent: this
+    }]
   }
   get serverEvent(){
     return {

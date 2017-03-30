@@ -3,10 +3,13 @@
 
 
 export const jsonToCourse = (data) => {
-  return new Course(
+  let c = new Course(
     data.idCourse,
     data.name
   );
+  console.log(data, "to", c);
+  
+  return c;
 }
 
 

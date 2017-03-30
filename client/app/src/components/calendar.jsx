@@ -4,6 +4,9 @@ import moment from 'moment';
 
 import { eventService, Event, calendarToEvent } from 'services/event';
 
+require("style!css!fullCalendar/dist/fullCalendar.css");
+
+
 export class Calendar extends React.Component {
   constructor(props){
     super(props);
@@ -37,7 +40,7 @@ export class Calendar extends React.Component {
       //Set up event handling for both resizing events and moving them around
       eventDrop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
       eventResize: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
-      eventClick: (event) => this.props.eventClick(eventService.getEvent(event.id))
+      eventClick: (event) => {console.log(event);this.props.eventClick(event.parent)}
     });
   }
 
@@ -65,7 +68,9 @@ export class Calendar extends React.Component {
     const { calendar } = this.refs;
     let eventDisplay = [];
     for(let e of nextProps.events){
-      eventDisplay.push(e.calendarEvent);
+      for(let ce of e.calendarEvents){
+        eventDisplay.push(ce);
+      }
     }
     $(calendar).fullCalendar('removeEvents');
     $(calendar).fullCalendar('addEventSource', eventDisplay);

@@ -1,3 +1,5 @@
+import 'fullcalendar';
+import 'moment';
 
 import React from "react";
 import { render } from "react-dom";
@@ -9,6 +11,10 @@ import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 're
 import { userService } from 'services/user/user.service.js';
 import { eventService } from 'services/event';
 import { courseService } from 'services/course';
+
+
+require("style!css!assets/style/app.css");
+
 
 const routes = (
   <Route component={App}>
@@ -27,6 +33,7 @@ class App extends React.Component{
     userService.getUser().subscribe(user => {
       console.log("User",user);
       eventService.refresh();
+      console.log("Course Service refresh");
       courseService.refresh();
       courseService.getUserCourses().subscribe(c => {
         console.log(c);

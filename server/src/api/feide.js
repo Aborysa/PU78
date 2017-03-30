@@ -20,7 +20,7 @@ const feideAPI = express.Router({mergeParams:true});
 
 nconf.argv()
     .env('__')
-    .file({ file: 'config.json' })
+    .file({ file: 'server/config.json' })
     .defaults({
       "session": {
         "secret": "000"
@@ -30,7 +30,7 @@ nconf.argv()
       }
     });
 
-console.log(nconf.get("database"));feideAPI.use(session({
+feideAPI.use(session({
   secret: nconf.get('session:secret'),
   resave: false,
   saveUninitialized: false
@@ -50,13 +50,11 @@ feideAPI.get('/login', passport.authenticate('passport-openid-connect', {"succes
 feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"callback": true}),(req,res)=>{
   let tokenID = req.user.data.sub;
   database.connect((conn, cb) => {
-    console.log("connected")
     conn.query(`SELECT EXISTS(SELECT * FROM Users WHERE idUsersFeide ='${tokenID}') AS userexists;`, (_,rows) =>{
-      console.log(rows[0].userexists);
       if (rows[0].userexists == 0) {
         conn.query(`INSERT INTO Users(idUsersFeide) VALUES ('${tokenID}');`);
       }
-      conn.close;
+      conn.release();
     });
   });
   res.redirect('/home');

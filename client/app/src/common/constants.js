@@ -5,3 +5,4 @@ export const API_USER = `user/`
 export const API_EVENTS = 'events/';
 export const API_COURSES = 'course/';
 export const API_USER_COURSES = 'usercourses/';
+export const API_LECTURES = 'lectures/';

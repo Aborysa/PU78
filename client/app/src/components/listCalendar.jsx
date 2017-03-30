@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 
+require("style!css!fullCalendar/dist/fullCalendar.css");
+
 export class ListCalendar extends React.Component {
   constructor(props){
     super(props);
@@ -36,7 +38,9 @@ export class ListCalendar extends React.Component {
     const { listCalendar } = this.refs;
     let eventDisplay = [];
     for(let e of nextProps.events){
-      eventDisplay.push(e.calendarEvent);
+      for(let ce of e.calendarEvents){
+        eventDisplay.push(ce);
+      }
     }
 
     $(listCalendar).fullCalendar('removeEvents');

@@ -14,7 +14,7 @@ eventRouter.get('/events', (req, res) => {
       }else{
         res.json(rows);
       }
-      conn.close;
+      conn.release();
     });
   });
 });
@@ -32,7 +32,7 @@ eventRouter.post('/events', (req, res) => {
       (_, result) => {
         console.log(_);
         res.json({status:"ok", id:result.insertId})
-        conn.close;
+        conn.release();
       });
   });
 });
@@ -48,7 +48,7 @@ eventRouter.patch('/events', (req, res) => {
   database.connect((conn, cb) => {
     conn.query(`UPDATE Events SET eventTitle='${title}', eventDesc='${description}', eventType='${type}', eventStart='${start}', eventEnd='${end}', idUsersFeide_fkEvents='${tokenID}' WHERE idEvents='${eventID}';`,(_) => {
       console.log(_);
-      conn.close;
+      conn.release();
     })
   });
   res.json({status:"ok"})
