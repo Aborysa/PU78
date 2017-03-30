@@ -8,7 +8,6 @@ var SRC_DIR = path.resolve(APP_DIR, 'src/');
 
 var config = {
   entry: path.resolve(SRC_DIR,'app.jsx'),
-  devtool: 'eval-source-map',
   output: {
     path: BUILD_DIR,
     publicPath: '/dist/',
