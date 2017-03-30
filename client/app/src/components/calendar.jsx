@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { eventService, Event, calendarToEvent } from 'services/event';
 
-require("style!css!fullCalendar/dist/fullCalendar.css");
+require("style!css!fullcalendar/dist/fullcalendar.css");
 
 
 export class Calendar extends React.Component {

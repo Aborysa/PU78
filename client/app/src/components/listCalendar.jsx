@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 
-require("style!css!fullCalendar/dist/fullCalendar.css");
+require("style!css!fullcalendar/dist/fullcalendar.css");
 
 export class ListCalendar extends React.Component {
   constructor(props){
