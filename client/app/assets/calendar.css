@@ -15,3 +15,7 @@ hr.sepCals{
 .triggerButton{
   visibility: hidden;
 }
+
+.fc-list-view{
+  margin-bottom: 30px;
+}

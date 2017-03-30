@@ -19,6 +19,10 @@ export class Calendar extends React.Component {
       //first day set to 1 (monday American standard)
       firstDay: 1,
       eventLimit: 5,
+      height:440,
+      contentHeight: 440,
+      aspectRatio: 0.5,
+      scrollTime: '08:00:00',
       defaultView: "agendaDay",
       //Sets the header of the calendar
       header: {
@@ -63,7 +67,7 @@ export class Calendar extends React.Component {
     for(let e of nextProps.events){
       eventDisplay.push(e.calendarEvent);
     }
-    $(calendar).fullCalendar('removeEvents')
+    $(calendar).fullCalendar('removeEvents');
     $(calendar).fullCalendar('addEventSource', eventDisplay);
   }
 

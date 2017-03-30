@@ -15,6 +15,9 @@ export class ListCalendar extends React.Component {
       events: [],
       editable: false,
       firstDay: 1,
+      height: "auto",
+      contentHeight: "auto",
+      aspectRatio: "auto",
       defaultView: "listWeek",
       header: {
         left:   'title',
@@ -37,7 +40,7 @@ export class ListCalendar extends React.Component {
     }
 
     $(listCalendar).fullCalendar('removeEvents');
-    
+
     $(listCalendar).fullCalendar('addEventSource', eventDisplay);
   }
 

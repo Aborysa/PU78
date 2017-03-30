@@ -59,7 +59,6 @@ export class CalendarView extends React.Component{
       <div>
         <Col xs={12} md={10} mdOffset={1}>
           <Calendar
-            style={{height: '300px'}}
             events={this.state.events}
             toolbar={false}
             eventClick={(event) => this.openViewEventModal(event)}
@@ -79,7 +78,6 @@ export class CalendarView extends React.Component{
             <Button>Annet</Button>
           </ButtonGroup>
           <ListCalendar
-            style={{height: '300px'}}
             events={this.state.events}
             toolbar={false}
             />

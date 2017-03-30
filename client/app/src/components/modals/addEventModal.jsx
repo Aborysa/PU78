@@ -9,14 +9,14 @@ export class AddEventModal extends React.Component{
   constructor(props){
     super(props);
     this.state = this.getInitialState();
-    this.pstart = new Date();
-    this.pend = new Date();
+    this.pstart = null;
+    this.pend = null;
     this.handleInputChange = this.handleInputChange.bind(this);
   }
   getInitialState() {
     return {
       isRepete: false,
-      showModal: false
+      showModal: false,
      };
   }
 
@@ -34,10 +34,10 @@ export class AddEventModal extends React.Component{
     this.setState({ showModal: false });
   }
   set start(v){
-    this.pstart = v;
+    this.pstart = moment(v);
   }
   set end(v){
-    this.pend = v;
+    this.pend = moment(v);
   }
   open() {
     this.setState({ showModal: true });
@@ -45,22 +45,41 @@ export class AddEventModal extends React.Component{
   saveClick(e){
     let title = ReactDOM.findDOMNode(this.refs.title).value;
     let desc = ReactDOM.findDOMNode(this.refs.desc).value;
-    let start = this.pstart.toDate();
-    let end = this.pend.toDate();
-    eventService.pushEvent(new Event(-1,title,start,end,desc,true));
-    this.close();
+    let start = this.pstart;
+    let end = this.pend;
+    if (this.inputValidation(title, desc, start, end)){
+      console.log("approved");
+    }else{
+      console.log("failed");
+    }
+
+  }
+  inputValidation(title, desc, start, end){
+    let valDuration = false;
+    let valText = false;
+    let valStart = false;
+    let valEnd = false;
+    let text ="";
+
+    if(title && desc){ valText = true;}
+    else{text += "Fill in both text and description \n";}
+
+    if(!start){ text += "Fill in starttime \n"}
+    else{ valStart = true;}
+
+    if(!end){ text += "Fill in endtime \n";}
+    else{ valEnd = true;}
+
+    if(start < end){ valDuration=true;}
+    else{
+      if(!valStart && !valEnd){}
+      else{text += "End cannot be before start \n";}
+    }
+
+    if(valDuration && valText && valStart && valEnd){return true}
+    else{alert(text)}
   }
   render() {
-    let endRepete = this.state.isRepete ?
-      <FormGroup controlId="formHorizontalRepeteEnd">
-        <Col componentClass={ControlLabel} sm={2}>
-          Avslutt repetisjon
-        </Col>
-        <Col sm={4}>
-          <Datetime onChange={(v) => this.end = v} ref="repetitionEnd" />
-        </Col>
-      </FormGroup> :
-      null;
 
     return (
       <div>
@@ -77,7 +96,7 @@ export class AddEventModal extends React.Component{
                   Tittel
                 </Col>
                 <Col sm={10}>
-                  <FormControl ref="title" type="text" placeholder="Tittel"/>
+                  <FormControl ref="title" type="text" placeholder="Tittel" required={true}/>
                 </Col>
               </FormGroup>
               <FormGroup controlId="formHorizontalDescription">
@@ -85,7 +104,7 @@ export class AddEventModal extends React.Component{
                   Beskrivelse
                 </Col>
                 <Col sm={10}>
-                  <FormControl ref="desc" componentClass="textarea" placeholder="Beskrivelse" maxLength="140"/>
+                  <FormControl ref="desc" componentClass="textarea" placeholder="Beskrivelse" maxLength="140" required={true}/>
                 </Col>
               </FormGroup>
               <FormGroup controlId="formHorizontalStartDate">
@@ -93,7 +112,7 @@ export class AddEventModal extends React.Component{
                   Starttid
                 </Col>
                 <Col sm={4}>
-                  <Datetime onChange={(v) => this.start = v} ref="start" readOnly={true}/>
+                  <Datetime onChange={(v) => this.start = v} ref="start" readOnly={true} required={true}/>
                 </Col>
               </FormGroup>
               <FormGroup controlId="formHorizontalEndDate">
@@ -101,22 +120,9 @@ export class AddEventModal extends React.Component{
                   Sluttid
                 </Col>
                 <Col sm={4}>
-                  <Datetime onChange={(v) => this.end = v} ref="end" />
+                  <Datetime onChange={(v) => this.end = v} ref="end" required={true}/>
                 </Col>
               </FormGroup>
-              <FormGroup controlId="formHorizontalRepeteToggle">
-                <Col componentClass={ControlLabel} sm={2}>
-                  Ukentlig repetisjon
-                </Col>
-                <Col sm={1}>
-                  <input
-                    name="isRepete"
-                    type="checkbox"
-                    checked={this.state.isRepete}
-                    onChange={this.handleInputChange} />
-                </Col>
-              </FormGroup>
-              {endRepete}
             </Form>
           </Modal.Body>
           <Modal.Footer>
