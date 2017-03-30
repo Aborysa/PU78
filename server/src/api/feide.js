@@ -15,6 +15,7 @@ let User = require('passport-openid-connect').User;
 
 let database = require("../database.js");
 
+const clientService = require("../services/database/client.service.js").clientService;
 
 const feideAPI = express.Router({mergeParams:true});
 
@@ -49,12 +50,11 @@ feideAPI.use(passport.session());
 feideAPI.get('/login', passport.authenticate('passport-openid-connect', {"successReturnToOrRedirect": "/"}));
 feideAPI.get('/callback', passport.authenticate('passport-openid-connect', {"callback": true}),(req,res)=>{
   let tokenID = req.user.data.sub;
-  database.connect((conn, cb) => {
+  clientService.getClient(database).subscribe((conn) => {
     conn.query(`SELECT EXISTS(SELECT * FROM Users WHERE idUsersFeide ='${tokenID}') AS userexists;`, (_,rows) =>{
       if (rows[0].userexists == 0) {
         conn.query(`INSERT INTO Users(idUsersFeide) VALUES ('${tokenID}');`);
       }
-      conn.release();
     });
   });
   res.redirect('/home');

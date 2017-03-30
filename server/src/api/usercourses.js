@@ -2,10 +2,12 @@ const express = require("express");
 const userCoursesRouter = express.Router({mergeParams:true});
 const database = require("../database.js");
 
+const clientService = require("../services/database/client.service.js").clientService;
+
 
 userCoursesRouter.get('/usercourses', (req,res) => {
   let tokenID = req.user.data.sub;
-  database.connect((conn, cb) => {
+  clientService.getClient(database).subscribe((conn) => {
     conn.query(
       `select * from CourseUsers join Courses on idCourse_fkCourseUsers=idCourse where idUser_fkCourseUsers = '${tokenID}';`,
       (_,rows) => {
@@ -15,7 +17,6 @@ userCoursesRouter.get('/usercourses', (req,res) => {
           console.log(_);
           res.json([1234]);
         };
-        conn.release();
       }
     );
   });
@@ -25,10 +26,9 @@ userCoursesRouter.post('/usercourses', (req, res) => {
   let tokenID = req.user.data.sub;
   let courseID = req.body.id;
   let role = req.body.role;
-  database.connect((conn, cb) => {
+  clientService.getClient(database).subscribe((conn) => {
     conn.query(`INSERT INTO CourseUsers(idUser_fkCourseUsers, idCourse_fkCourseUsers, courseUserRole) VALUES('${tokenID}', '${courseID}', '${role}');`,(_) => {
       console.log(_);
-      conn.release();
     })
   });
   res.json({status:"ok"})
@@ -37,10 +37,9 @@ userCoursesRouter.post('/usercourses', (req, res) => {
 userCoursesRouter.delete('/usercourses', (req, res) => {
   let tokenID = req.user.data.sub;
   let courseID = req.body.id;
-  database.connect((conn, cb) => {
+  clientService.getClient(database).subscribe((conn) => {
     conn.query(`DELETE FROM CourseUsers WHERE idUser_fkCourseUsers='${tokenID}' AND idCourse_fkCourseUsers='${courseID}';`,(_) => {
       console.log(_);
-      conn.release();
     })
   });
   res.json({status:"ok"})
