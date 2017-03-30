@@ -19,7 +19,7 @@ config.json
 
 
 # webpack build
-*/dist
+dist
 
 # nyc test coverage
 .nyc_output
