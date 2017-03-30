@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
+import {eventService} from 'services/event';
 
 
 
@@ -23,6 +24,9 @@ export class ViewLectureModal extends React.Component{
   }
   open(){
     this.setState({ showEvent: true });
+  }
+  delete(){
+    eventService.deleteEvent(this.props.event)
   }
   toggle(){
     this.setState({ showEvent: !this.state.showEvent });
@@ -76,7 +80,8 @@ export class ViewLectureModal extends React.Component{
           </Modal.Body>
           <Modal.Footer>
             {mapButton}
-            <Button  onClick={() => this.close()} bsStyle="primary">Lukk</Button>
+            <Button onClick={() => this.close()} bsStyle="primary">Lukk</Button>
+            <Button onClick={() => this.delete()} bsStyle="danger">Slett hendelse</Button>
           </Modal.Footer>
         </Modal>
       </div>
