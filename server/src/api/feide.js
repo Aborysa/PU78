@@ -20,7 +20,7 @@ const feideAPI = express.Router({mergeParams:true});
 
 nconf.argv()
     .env('__')
-    .file({ file: 'config.json' })
+    .file({ file: 'server/config.json' })
     .defaults({
       "session": {
         "secret": "000"
@@ -30,7 +30,7 @@ nconf.argv()
       }
     });
 
-console.log(nconf.get("database"));feideAPI.use(session({
+feideAPI.use(session({
   secret: nconf.get('session:secret'),
   resave: false,
   saveUninitialized: false

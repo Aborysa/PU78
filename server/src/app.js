@@ -23,32 +23,14 @@ app.use(cookieParser());
 
 
 app.use(api.base);
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.resolve(__dirname, '../public')));
 
 
 // catch 404 and forward to error handler
 
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  res.sendFile(path.resolve(__dirname,'../public/index.html'));
 });
 
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.log(err);
-  // render the error page
-  res.status(err.status || 500);
-  if(err.status == 404){
-    res.sendFile(path.resolve("public/index.html"));
-  }else{
-    res.send(err);
-  }
-
-});
 
 module.exports = app;
