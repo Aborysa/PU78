@@ -2,8 +2,9 @@ pipeline:
   restore-cache:
     image: drillster/drone-volume-cache
     when:
-      - push
-      - pull_request
+      event:
+        - push
+        - pull_request
     restore: true
     mount:
       - ./node_modules
@@ -28,7 +29,6 @@ pipeline:
       event:
         - push
         - pull_request
-    
     rebuild: true
     mount:
       - ./node_modules
