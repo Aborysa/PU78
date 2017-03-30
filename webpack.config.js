@@ -17,9 +17,6 @@ var config = {
   module : {
     loaders : [
       {
-        test: /\.css$/, loader: 'style!css'
-      },
-      {
         test: /\.test.jsx?$/,
         exclude: /node_modules/,
         loader: 'ignore-loader'
