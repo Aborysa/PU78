@@ -28,6 +28,9 @@ export const jsonToLecture = (data) => {
 }
 
 
+let course_cache = {};
+let mix_color = [200,200,200];
+
 export class Lecture{
   constructor(id,course,acronym,startTime,endTime,desc,day,weeks){
     this._id = id;
@@ -39,6 +42,15 @@ export class Lecture{
     this._type = "LECTURE";
     this._weekDay = day;
     this._weeks = weeks;
+    if(!course_cache[course]){
+      let c = [Math.random()*255,Math.random()*255,Math.random()*255];
+      c[0] = Math.ceil((c[0] + mix_color[0])/2);
+      c[1] = Math.ceil((c[1] + mix_color[1])/2);
+      c[2] = Math.ceil((c[2] + mix_color[2])/2);
+      course_cache[course] = c;
+      mix_color = c;
+    }
+    this.rc = course_cache[course];
   }
   set id(nid){
     if(this.id <= 0){
@@ -85,7 +97,7 @@ export class Lecture{
           editable: this.editable,
           desc: this.desc,
           type: this._type,
-          backgroundColor: "orange",
+          backgroundColor: `rgb(${this.rc[0]},${this.rc[1]},${this.rc[2]})`,
           parent: this
         }
       );
