@@ -53,11 +53,11 @@ export class EventServiceProvider{
     });
   }
 
-  deleteEvent(id){
+  deleteEvent(event){
     http.delete(`${API_BASE}${API_EVENTS}`,{
-      id: id
+      id: event.id
     }).subscribe((res) => {
-      delete this._eventCache[id];
+      delete this._eventCache[event.id];
       let events = [];
       for(let i in this._eventCache){
         events.push(this._eventCache[i]);
