@@ -4,10 +4,12 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 import Datetime from 'react-datetime';
-import { eventService,Event } from 'services/event';
+import { eventService,Event, lectureService } from 'services/event';
 import { AddEventModal, ViewLectureModal } from 'components/modals';
 import { Calendar } from 'components/calendar.jsx';
 import { ListCalendar } from 'components/listCalendar.jsx';
+import { courseService } from 'services/course';
+
 
 moment.locale('nb');
 BigCalendar.momentLocalizer(moment);
@@ -21,6 +23,7 @@ export class CalendarView extends React.Component{
     super(props);
     this.state = {
       events: [],
+      lectures: [],
       viewModalProps: {
         show: false
       }
@@ -48,7 +51,29 @@ export class CalendarView extends React.Component{
         events: events
       }));
     });
-
+    courseService.getUserCourses().subscribe(courses => {
+      let allLectures = [];
+      let count = 0;
+      for(let course of courses){
+        count++;
+        lectureService.getLectures(course.id).subscribe(lectures => {
+          for(let lecture of lectures){
+            allLectures.push(lecture);
+          }
+          count--;
+          if(count <= 0){
+            this.setState(Object.assign(this.state,{
+              lectures: allLectures
+            }));
+          }
+        });
+      }
+      if(count <= 0){
+        this.setState(Object.assign(this.state,{
+          lectures: allLectures
+        }));
+      }
+    });
   }
 
 
@@ -60,7 +85,7 @@ export class CalendarView extends React.Component{
         <Col xs={12} md={10} mdOffset={1}>
           <Calendar
             style={{height: '300px'}}
-            events={this.state.events}
+            events={this.state.events.concat(this.state.lectures)}
             toolbar={false}
             eventClick={(event) => this.openViewEventModal(event)}
           />
