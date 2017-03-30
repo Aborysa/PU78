@@ -10,6 +10,7 @@ require("style!css!fullcalendar/dist/fullcalendar.css");
 export class Calendar extends React.Component {
   constructor(props){
     super(props);
+    this.disable_click = false;
   }
   componentDidMount(){
     const { calendar } = this.refs;
@@ -38,9 +39,25 @@ export class Calendar extends React.Component {
       //Enable user to click on specific dates and weeks in month and week view
       navLinks: true,
       //Set up event handling for both resizing events and moving them around
-      eventDrop: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
-      eventResize: (event, jsEvent, ui, view) => this.eventChanged(event, jsEvent, ui, view),
-      eventClick: (event) => {console.log(event);this.props.eventClick(event.parent)}
+      eventDragStart: () => {
+        this.disable_click = true
+        console.log("drag start");
+      },
+      eventResizeStart: () => this.disable_click = true,
+      eventDrop: (event, jsEvent, ui, view) => {
+        this.eventChanged(event, jsEvent, ui, view)
+        this.disable_click = false;
+        console.log("event drop");
+      },
+      eventResize: (event, jsEvent, ui, view) => {
+        this.eventChanged(event, jsEvent, ui, view)
+        this.disable_click = false;
+        console.log("event resize");
+      },
+      eventClick: (event) => {
+        console.log("event click", this.disable_click);
+        if (!this.disable_click) 
+          this.props.eventClick(event.parent)}
     });
   }
 
