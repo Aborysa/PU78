@@ -1,23 +1,40 @@
-cache:
-  mount:
-    - /drone/node_modules
-
 pipeline:
+  restore-cache:
+    image: drillster/drone-volume-cache
+    when:
+      - push
+      - pull_request
+    restore: true
+    mount:
+      - ./node_modules
+    volumes:
+      - /tmp/cache:/cache
+
   tests:
     image: node
     commands:
-      - mkdir -p /drone/node_modules
-      - cp -a /drone/node_modules ./
-      - rm -rf /drone/node_modules
-      - npm install
+      - npm install --quiet
       - npm install -g codecov
       - npm run test-cov
       - codecov -t ${UPLOAD_TOKEN}
-      - cp -a ./node_modules /drone
     when:
       event: 
         - push 
         - pull_request
+        
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    when:
+      event:
+        - push
+        - pull_request
+    
+    rebuild: true
+    mount:
+      - ./node_modules
+    
+    volumes:
+      - /tmp/cache:/cache
 
   deploy:
     image: appleboy/drone-ssh
