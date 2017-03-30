@@ -1,13 +1,13 @@
 {
   "dataporten": {
-    "issuerHost": "https://auth.somepage.com/",
+    "issuerHost": "https://auth.dataporten.no/",
     "client_id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
     "client_secret": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
     "redirect_uri": "http://127.0.0.1:3000/callback",
     "scope": "groups longterm openid userid email profile userid-feide",
-    "issuer": "https:\/\/auth.somepage.com",
+    "issuer": "https:\/\/auth.dataporten.no",
     "authorization_endpoint": "https:\/\/auth.dataporten.no\/oauth\/authorization",
-    "token_endpoint": "https:\/\/somepage.com\/oauth\/token"
+    "token_endpoint": "https:\/\/auth.dataporten.no\/oauth\/token"
   },
   "database": {
     "host": "",

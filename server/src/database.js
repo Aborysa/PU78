@@ -5,9 +5,7 @@ let DB = db.DB;
 
 nconf.argv()
   .env('__')
-  .file({ file: 'config.json' });
-
-
+  .file({ file: 'server/config.json' });
 
 
 
