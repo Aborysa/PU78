@@ -27,7 +27,7 @@ export class Calendar extends React.Component {
       contentHeight: 440,
       aspectRatio: 0.5,
       scrollTime: '08:00:00',
-      defaultView: "agendaDay",
+      defaultView: "month",
       //Sets the header of the calendar
       header: {
         left:   'title',
@@ -56,7 +56,7 @@ export class Calendar extends React.Component {
       },
       eventClick: (event) => {
         console.log("event click", this.disable_click);
-        if (!this.disable_click) 
+        if (!this.disable_click)
           this.props.eventClick(event.parent)}
     });
   }
