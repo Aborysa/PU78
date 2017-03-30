@@ -1,3 +1,5 @@
+require("style!css!assets/style/app.css");
+
 import 'fullcalendar';
 import 'moment';
 
@@ -13,7 +15,7 @@ import { eventService } from 'services/event';
 import { courseService } from 'services/course';
 
 
-require("style!css!assets/style/app.css");
+
 
 
 const routes = (
