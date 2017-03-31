@@ -14,7 +14,11 @@ export const jsonToLecture = (data) => {
       weeks.push(i);
     }
   });
+  let rooms = [];
   
+  for(let room of data.rooms){
+    rooms.push(jsonToRoom(room));
+  }
   return new Lecture(
     data.idLectures,
     data.idCourse_fkLectures,
@@ -23,16 +27,68 @@ export const jsonToLecture = (data) => {
     data.endTime,
     data.desc,
     data.weekDay,
-    weeks
+    weeks,
+    rooms
   );
 }
 
+export const jsonToRoom = (data) => {
+  return new Room(
+    data.syllabusKey,
+    data.roomNr,
+    data.roomName,
+    data.buildingNr,
+    data.floor,
+    data.floorName,
+    data.type
+  )
+}
 
 let course_cache = {};
 let mix_color = [200,200,200];
 
+
+
+export class Room{
+  constructor(syllabusKey,room,roomName,building,floor,floorName,type){
+    this._syllabusKey = syllabusKey;
+    this._room = room;
+    this._roomName = roomName;
+    this._building = building;
+    this._floor = floor;
+    this._floorName = floorName;
+    this._type = type;
+  }
+  get floor(){
+    return this._floorName;
+  }
+  get floorNr(){
+    return this._floor;
+  }
+  get buildingNr(){
+    return this._building;
+  }
+  get roomNr(){
+    return this._room;
+  }
+  get type(){
+    return this._type;
+  }
+  get room(){
+    return this._roomName;
+  }
+  get name(){
+    if(this.room)
+      return `${this.type}: ${this.room}`;
+    return `${this.type}`;
+  }
+  get mazeId(){
+    return `${this.buildingNr}-${this.roomNr}`;
+  }
+}
+
 export class Lecture{
-  constructor(id,course,acronym,startTime,endTime,desc,day,weeks){
+  constructor(id,course,acronym,startTime,endTime,desc,day,weeks,rooms){
     this._id = id;
     this._course = course;
     this._acronym = acronym;
@@ -51,6 +107,7 @@ export class Lecture{
       mix_color = c;
     }
     this.rc = course_cache[course];
+    this._rooms = rooms;
   }
   set id(nid){
     if(this.id <= 0){
@@ -61,7 +118,7 @@ export class Lecture{
     return this._id;
   }
   get title(){
-    return `${this._course}: ${this._acronym}`;
+    return `${this._course}: ${this.desc}`;
   }
   get start(){
     return this._startTime;
@@ -74,6 +131,9 @@ export class Lecture{
   }
   get editable(){
     return false;
+  }
+  get rooms(){
+    return this._rooms;
   }
   get calendarEvents(){
     let events = [];
