@@ -62,18 +62,18 @@ export class AddEventModal extends React.Component{
     let text ="";
 
     if(title && desc){ valText = true;}
-    else{text += "Fill in both text and description \n";}
+    else{text += "Skriv inn både Tittel og Beskrivelse \n";}
 
-    if(!start){ text += "Fill in starttime \n"}
+    if(!start){ text += "Fyll inn Starttid \n"}
     else{ valStart = true;}
 
-    if(!end){ text += "Fill in endtime \n";}
+    if(!end){ text += "Fyll inn Sluttid \n";}
     else{ valEnd = true;}
 
     if(start < end){ valDuration=true;}
     else{
       if(!valStart && !valEnd){}
-      else{text += "End cannot be before start \n";}
+      else{text += "Sluttid kan ikke være før Starttid \n";}
     }
 
     if(valDuration && valText && valStart && valEnd){return true}

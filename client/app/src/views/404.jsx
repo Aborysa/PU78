@@ -12,11 +12,11 @@ export class NotFound extends React.Component{
           <img src="/assets/images/banner.png" alt="404 in a 404, wow dude...." />
         </div>
         <div className="page">
-          <h2>Dude,we can't find that page!</h2>
-          <h4>ooooooooooor, we just doesn't want to...</h4>
+          <h2>Vi kan ikke finne siden du ser etter!</h2>
+          <h4>Eller så gidder vi ikke...</h4>
         </div>
         <div className="footer">
-          <p>Brought to you by the Studynator team</p>
+          <p>Vennlig hilsen Studynator-teamet</p>
         </div>
       </div>
     )
