@@ -1,6 +1,7 @@
 
 import moment from 'moment';
 
+import { VEVENT } from 'ics-js';
 
 
 
@@ -109,11 +110,6 @@ export class Lecture{
     this.rc = course_cache[course];
     this._rooms = rooms;
   }
-  set id(nid){
-    if(this.id <= 0){
-      this.id = nid;
-    }
-  }
   get id(){
     return this._id;
   }
@@ -134,6 +130,26 @@ export class Lecture{
   }
   get rooms(){
     return this._rooms;
+  }
+  get iceEvents(){
+    let events = [];
+    for(let w of this._weeks){
+      let s = moment().day(this._weekDay).week(w).set({
+        hour: this.start.get('hour'),
+        minute: this.start.get('minute'),
+        second: this.start.get('second')
+      });
+      let e = moment().day(this._weekDay).week(w).set({
+        hour: this.end.get('hour'),
+        minute: this.end.get('minute'),
+        second: this.end.get('second')
+      });
+      let event = new VEVENT();
+      event.addProp("UID",`L-${this.id}-${this.course}-${this.acronym}@studynator.me`);
+      
+      events.push(event);
+    }
+    return events;
   }
   get calendarEvents(){
     let events = [];
