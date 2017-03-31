@@ -19,7 +19,6 @@ lectureRouter.get('/lectures/:code', (req,res) => {
           console.log(_);
           res.json([1234]);
         };
-        conn.release();
       }
     );
   });
