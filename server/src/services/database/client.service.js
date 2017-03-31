@@ -21,6 +21,7 @@ class ClientServiceProvider{
           o.conn = conn;
           observer.next(conn);
         });
+        this.observables[db] = o; 
       }else{
         observer.next(o.conn);
       }
@@ -28,7 +29,6 @@ class ClientServiceProvider{
       return () => {
         o.count--;
         if(o.count <= 0){
-          console.log("Killing DB connection");
           o.conn.release();
           this.observables[db] = null;
         }

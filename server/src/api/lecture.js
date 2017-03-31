@@ -8,7 +8,7 @@ const clientService = require("../services/database/client.service.js").clientSe
 
 lectureRouter.get('/lectures/:code', (req,res) => {
   let course = req.params.code;
-  database.connect((conn, cb) => {
+  clientService.getClient(database).subscribe( conn => {
     conn.query(
       `select Lectures.*, GROUP_CONCAT(startWeek,"-",endWeek) AS 'weeks' 
         from Lectures join LectureWeeks on idLectures=idLecture_fkLectureWeeks where idCourse_fkLectures = '${course}' group by idLectures;`,
