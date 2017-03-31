@@ -14,7 +14,7 @@ export const jsonToLecture = (data) => {
       weeks.push(i);
     }
   });
-  
+
   return new Lecture(
     data.idLectures,
     data.idCourse_fkLectures,
@@ -60,6 +60,9 @@ export class Lecture{
   get id(){
     return this._id;
   }
+  get acronym(){
+    return this._acronym;
+  }
   get title(){
     return `${this._course}: ${this._acronym}`;
   }
@@ -104,5 +107,5 @@ export class Lecture{
     }
     return events;
   }
-  
+
 }
