@@ -25,7 +25,7 @@ export class AddEventModal extends React.Component{
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    this.setState({
+    this.setState(Object.assign({},this.state),{
       [name]: value
     });
   }
@@ -48,7 +48,8 @@ export class AddEventModal extends React.Component{
     let start = this.pstart;
     let end = this.pend;
     if (this.inputValidation(title, desc, start, end)){
-      console.log("approved");
+      let event = new Event(-1,title, start, end, desc, true, "personal");
+      eventService.pushEvent(event);
     }else{
       console.log("failed");
     }
@@ -76,8 +77,10 @@ export class AddEventModal extends React.Component{
       else{text += "End cannot be before start \n";}
     }
 
-    if(valDuration && valText && valStart && valEnd){return true}
-    else{alert(text)}
+    if(valDuration && valText && valStart && valEnd)
+      return true;
+    else
+      alert(text);
   }
   render() {
 
