@@ -1,5 +1,6 @@
 @charset 'UTF-8';
+@import './default.css';
 @import './login.css';
 @import './navBar.css';
 @import './404.css';
-@import './calendar.css'
+@import './calendar.css';

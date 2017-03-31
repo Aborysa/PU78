@@ -7,7 +7,7 @@ const clientService = require("../services/database/client.service.js").clientSe
 
 eventRouter.get('/events', (req, res) => {
   let tokenID = req.user.data.sub;
-  
+
   clientService.getClient(database).subscribe((conn) => {
     conn.query(`SELECT * FROM Events WHERE idUsersFeide_fkEvents ='${tokenID}';`, (_,rows) =>{
       if(_){
@@ -17,8 +17,17 @@ eventRouter.get('/events', (req, res) => {
         res.json(rows);
       }
     });
-  })
+  });
+});
 
+eventRouter.delete('/events', (req,res) => {
+  clientService.getClient(database).subscribe((conn) => {
+    conn.query(
+      `DELETE FROM Events WHERE idEvents = ${req.body.id};`, () => {
+        res.json({status:"ok"});
+      }
+    );
+  });
 });
 
 eventRouter.post('/events', (req, res) => {

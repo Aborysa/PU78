@@ -79,14 +79,13 @@ export class CalendarView extends React.Component{
 
   render() {
     let viewEventModal = <ViewLectureModal show={this.state.viewModalProps.show} event={this.state.viewModalProps.event}/>
-
+    let events = this.state.events.concat(this.state.lectures);
     return (
       <div>
         <Col xs={12} md={10} mdOffset={1}>
           <Calendar
             style={{height: '300px'}}
-            events={this.state.events.concat(this.state.lectures)}
-            toolbar={false}
+            events={events}
             eventClick={(event) => this.openViewEventModal(event)}
           />
         </Col>
@@ -104,8 +103,7 @@ export class CalendarView extends React.Component{
             <Button>Annet</Button>
           </ButtonGroup>
           <ListCalendar
-            style={{height: '300px'}}
-            events={this.state.events}
+            events={events}
             toolbar={false}
             />
         </Col>

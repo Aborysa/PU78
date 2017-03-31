@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-
 import moment from 'moment';
-
 import { eventService, Event, calendarToEvent } from 'services/event';
+import { BaseCalendar } from './baseCalendar.jsx';
 
 require("style!css!fullcalendar/dist/fullcalendar.css");
 
@@ -12,86 +11,54 @@ export class Calendar extends React.Component {
     super(props);
     this.disable_click = false;
   }
-  componentDidMount(){
-    const { calendar } = this.refs;
-    //Init calendar with jQuery
-    $(calendar).fullCalendar({
-      //No events initially
-      events: [],
-      //Lets us move events, some events like lectures will have this disabled
-      editable: true,
-      //first day set to 1 (monday American standard)
-      firstDay: 1,
-      eventLimit: 5,
-      defaultView: "agendaDay",
-      //Sets the header of the calendar
-      header: {
-        left:   'title',
-        center: '',
-        right:  'today prev,next month agendaDay agendaWeek'
-      },
-      //We want to display week numbers
-      weekNumbers: true,
-      //Enable user to click on specific dates and weeks in month and week view
-      navLinks: true,
-      //Set up event handling for both resizing events and moving them around
-      eventDragStart: () => {
-        this.disable_click = true
-        console.log("drag start");
-      },
-      eventResizeStart: () => this.disable_click = true,
-      eventDrop: (event, jsEvent, ui, view) => {
-        this.eventChanged(event, jsEvent, ui, view)
-        this.disable_click = false;
-        console.log("event drop");
-      },
-      eventResize: (event, jsEvent, ui, view) => {
-        this.eventChanged(event, jsEvent, ui, view)
-        this.disable_click = false;
-        console.log("event resize");
-      },
-      eventClick: (event) => {
-        console.log("event click", this.disable_click);
-        if (!this.disable_click) 
-          this.props.eventClick(event.parent)}
-    });
-  }
 
   eventChanged(event, jsEvent, ui, view){
     //When an event changes we need cascade the change
     eventService.updateEvent(event.id,calendarToEvent(event));
   }
 
-  selectDate(date,jsEvent,view){
-    //Helper method for selecting a specific date
-    const { calendar } = this.refs;
-    $(calendar).fullCalendar('changeView', 'agendaDay')
-    $(calendar).fullCalendar('gotoDate',date);
-  }
-
-  selectWeek(week){
-    //Helper method for selecting a specific week
-    const { calendar } = this.refs;
-    $(calendar).fullCalendar('changeView', 'agendaWeek')
-    $(calendar).fullCalendar('gotoDate',moment().day('Monday').week(week));
-  }
-
-  componentWillReceiveProps(nextProps){
-    //When events change we need to make sure changes are reflected visually in the calendar
-    const { calendar } = this.refs;
-    let eventDisplay = [];
-    for(let e of nextProps.events){
-      for(let ce of e.calendarEvents){
-        eventDisplay.push(ce);
-      }
-    }
-    $(calendar).fullCalendar('removeEvents')
-    $(calendar).fullCalendar('addEventSource', eventDisplay);
-  }
 
   render() {
     return (
-      <div ref='calendar'></div>
+      <BaseCalendar
+        editable={true}
+        eventLimit={2}
+        height={440}
+        contentHeight= {440}
+        aspectRatio= {0.5}
+        scrollTime= '08:00:00'
+        defaultView= "month"
+        header= {{
+          left:   'title',
+          center: '',
+          right:  'today prev,next month agendaDay agendaWeek'
+        }}
+        weekNumbers={true}
+        navLinks={true}
+
+        eventDragStart = {
+          () => this.disable_click = true
+        }
+        eventResizeStart = {() => this.disable_click = true}
+        eventDrop = {
+          (event, jsEvent, ui, view) => {
+            this.eventChanged(event, jsEvent, ui, view);
+            this.disable_click = false;
+          }
+        }
+        eventResize = {
+          (event, jsEvent, ui, view) => {
+            this.eventChanged(event, jsEvent, ui, view);
+            this.disable_click = false;
+          }
+        }
+        eventClick= {
+          (event) => {
+            if (!this.disable_click) this.props.eventClick(event.parent);
+          }
+        }
+        events={this.props.events}
+        />
     );
   }
 

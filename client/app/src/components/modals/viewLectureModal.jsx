@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
+import {eventService} from 'services/event';
 
 
 
@@ -24,6 +25,9 @@ export class ViewLectureModal extends React.Component{
   open(){
     this.setState({ showEvent: true });
   }
+  delete(){
+    eventService.deleteEvent(this.props.event)
+  }
   toggle(){
     this.setState({ showEvent: !this.state.showEvent });
   }
@@ -40,22 +44,36 @@ export class ViewLectureModal extends React.Component{
   }
 
   render() {
-    let map = this.state.showMap ?
-    <iframe
-      src="http://use.mazemap.com/embed.html?campusid=1&sharepoitype=poi&sharepoi=0800.1"
-      width="100%"
-      height="420"
-      frameBorder="0"
-      marginHeight="0"
-      marginWidth="0"
-      scrolling="no"
-    /> :
-    null;
-
-    let mapButton = this.state.showMap ?
-      <Button onClick={() => this.toggleOpenMap()} bsStyle="danger">Lukk Kart</Button>:
-      <Button onClick={() => this.toggleOpenMap()} bsStyle="success">Vis Kart</Button>;
-
+    let map = null;
+    let mapButton = null;
+    let rooms = [];
+    if(this.props.event) {
+      for(let room of this.props.event.rooms){
+        rooms.push(
+          <li
+            key={room.sy}
+          >
+            {room.name}
+          </li>
+        );
+      }
+      map = (this.state.showMap && this.props.event.rooms.length > 0) ?
+        <iframe
+          src={`https://use.mazemap.com/?campusid=1&desttype=identifier&dest=${this.props.event.rooms[0].mazeId}`}
+          width="100%"
+          height="420"
+          frameBorder="0"
+          marginHeight="0"
+          marginWidth="0"
+          scrolling="no"
+        /> :
+        null;
+      mapButton = this.state.showMap ?
+        <Button onClick={() => this.toggleOpenMap()} bsStyle="danger">Lukk Kart</Button> :
+        this.props.event.rooms.length > 0 ? 
+          <Button onClick={() => this.toggleOpenMap()} bsStyle="success">Vis Kart</Button> :
+          null;
+    }
 
     return (
       <div>
@@ -64,19 +82,17 @@ export class ViewLectureModal extends React.Component{
             <h1>{this.props.event ? this.props.event.title : "None"}</h1>
           </Modal.Header>
           <Modal.Body>
-            <Form horizontal>
-              <h3>Beskrivelse: </h3>
-              <p>{this.props.event ? (this.props.event.desc || "Ingen beskrivelse gitt") : "None" }</p>
-            </Form>
-            <Form>
-              <h3>Tidspunkt: </h3>
-              <p>{this.props.event ? this.props.event.start.format('HH:mm:ss') : "None"}</p>
-            </Form>
+            <p>Rom: 
+              <ul>
+                {rooms}
+              </ul>
+            </p>
+            <p>Tidspunkt: {this.props.event ? `${this.props.event.start.format('HH:mm')} - ${this.props.event.end.format('HH:mm')}` : "None"}</p>
             {map}
           </Modal.Body>
           <Modal.Footer>
             {mapButton}
-            <Button  onClick={() => this.close()} bsStyle="primary">Lukk</Button>
+            <Button onClick={() => this.close()} bsStyle="primary">Lukk</Button>
           </Modal.Footer>
         </Modal>
       </div>

@@ -50,7 +50,7 @@ export class NavBar extends React.Component{
         <MenuItem disabled key={c.id}>{c.id} : {c.name}
           <div className="d-flex p-2">
             <Button className="subjectButton" onClick={ () => courseService.addUserCourse(c)}>
-              <Glyphicon glyph="ok" className="glyphOk"/>
+              <Glyphicon glyph="ok" className="glyphAdd"/>
             </Button>
           </div>
         </MenuItem>

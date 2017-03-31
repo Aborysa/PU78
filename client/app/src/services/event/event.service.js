@@ -6,7 +6,7 @@ import { jsonToEvent } from './event';
 
 export class EventServiceProvider{
   constructor(){
-    this.eventSubject = new ReplaySubject();  
+    this.eventSubject = new ReplaySubject();
     this._events = [];
     this._eventCache = {};
   }
@@ -53,6 +53,19 @@ export class EventServiceProvider{
     });
   }
 
+  deleteEvent(event){
+    http.delete(`${API_BASE}${API_EVENTS}`,{
+      id: event.id
+    }).subscribe((res) => {
+      delete this._eventCache[event.id];
+      let events = [];
+      for(let i in this._eventCache){
+        events.push(this._eventCache[i]);
+      }
+      this.events = events;
+    })
+  }
+
   pushEvent(event){
     http.post(`${API_BASE}${API_EVENTS}`,event.serverEvent).subscribe((res) => {
       this.events.push(event);
@@ -64,4 +77,3 @@ export class EventServiceProvider{
 
 
 export const eventService = new EventServiceProvider();
-
