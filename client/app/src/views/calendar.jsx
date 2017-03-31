@@ -9,6 +9,7 @@ import { AddEventModal, ViewLectureModal } from 'components/modals';
 import { Calendar } from 'components/calendar.jsx';
 import { ListCalendar } from 'components/listCalendar.jsx';
 import { courseService } from 'services/course';
+import { CheckoutButton } from 'components/checkoutButton.jsx';
 
 
 moment.locale('nb');
@@ -97,10 +98,10 @@ export class CalendarView extends React.Component{
           <hr className="sepCals"/>
         </Col>
         <Col xs={12} md={10} mdOffset={1}>
-          <ButtonGroup bsSize="small">
-            <Button>Forelesning</Button>
-            <Button>Øving</Button>
-            <Button>Annet</Button>
+          <ButtonGroup>
+            <CheckoutButton checked>Forelesning</CheckoutButton>
+            <CheckoutButton checked>Øvingsforelesning</CheckoutButton>
+            <CheckoutButton checked>Egne aktiviteter</CheckoutButton>
           </ButtonGroup>
           <ListCalendar
             events={events}
