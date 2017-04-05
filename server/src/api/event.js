@@ -23,7 +23,7 @@ eventRouter.get('/events', (req, res) => {
 eventRouter.delete('/events', (req,res) => {
   clientService.getClient(database).subscribe((conn) => {
     conn.query(
-      `DELETE FROM Events WHERE idEvents = ${req.data.id};`, () => {
+      `DELETE FROM Events WHERE idEvents = ${req.body.id};`, () => {
         res.json({status:"ok"});
       }
     );

@@ -7,7 +7,7 @@ const clientService = require("../services/database/client.service.js").clientSe
 
 courseRouter.get('/course', (req,res) => {
   let search = req.query.q;
-  database.connect((conn, cb) => {
+  clientService.getClient(database).subscribe(conn => {
     conn.query(
       `SELECT * FROM Courses WHERE idCourse LIKE '%${search}%' LIMIT 10;`,
       (_,rows) => {
@@ -17,7 +17,6 @@ courseRouter.get('/course', (req,res) => {
           console.log(_);
           res.json([1234]);
         };
-        conn.release();
       }
     );
   });
