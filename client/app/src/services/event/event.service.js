@@ -43,7 +43,7 @@ export class EventServiceProvider{
 
   updateEvent(id,event){
     http.patch(`${API_BASE}${API_EVENTS}`,event.patchEvent).subscribe((res) => {
-      $.notify("Endret", {type: 'info'});
+      $.notify("Endret", {type: 'success', z_index: 10000, placement: {align: "center"}});
       console.log(res);
       this._eventCache[id] = event;
       let events = [];
@@ -58,7 +58,7 @@ export class EventServiceProvider{
     http.delete(`${API_BASE}${API_EVENTS}`,{
       id: event.id
     }).subscribe((res) => {
-      $.notify("Slettet",{type: 'danger'});
+      $.notify("Slettet",{type: 'success', z_index: 10000, placement: {align: "center"}});
       delete this._eventCache[event.id];
       let events = [];
       for(let i in this._eventCache){
@@ -70,7 +70,7 @@ export class EventServiceProvider{
 
   pushEvent(event){
     http.post(`${API_BASE}${API_EVENTS}`,event.serverEvent).subscribe((res) => {
-      $.notify("Lagret", {type: 'success'});
+      $.notify("Lagret", {type: 'success', z_index: 10000, placement: {align: "center"}});
       this.events.push(event);
       this.events = this.events.slice();
       this._eventCache[event.id] = event;
