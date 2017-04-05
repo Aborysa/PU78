@@ -40,7 +40,7 @@ export class Event{
   }
   set id(nid){
     if(this.id <= 0){
-      this.id = nid;
+      this._id = nid;
     }
   }
   get id(){

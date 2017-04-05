@@ -21,12 +21,12 @@ export class ViewLectureModal extends React.Component{
       showEvent: false,
       showMap: false
      });
+      if(this.props.onClose){
+       this.props.onClose();
+     }
   }
   open(){
     this.setState({ showEvent: true });
-  }
-  delete(){
-    eventService.deleteEvent(this.props.event)
   }
   toggle(){
     this.setState({ showEvent: !this.state.showEvent });
