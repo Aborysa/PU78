@@ -68,6 +68,7 @@ export class EventServiceProvider{
 
   pushEvent(event){
     http.post(`${API_BASE}${API_EVENTS}`,event.serverEvent).subscribe((res) => {
+      event.id = res.id
       this.events.push(event);
       this.events = this.events.slice();
       this._eventCache[event.id] = event;
