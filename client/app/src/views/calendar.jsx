@@ -9,9 +9,12 @@ import { AddEventModal, ViewLectureModal, ViewEventModal } from 'components/moda
 import { Calendar } from 'components/calendar.jsx';
 import { ListCalendar } from 'components/listCalendar.jsx';
 import { courseService } from 'services/course';
-
+import { DownloadFile } from 'components/downloadFile.jsx';
+import { Component, Property } from 'immutable-ics';
+import { Subject } from 'rxjs';
 
 moment.locale('nb');
+
 BigCalendar.momentLocalizer(moment);
 
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
@@ -31,6 +34,7 @@ export class CalendarView extends React.Component{
         show: false
       }
     }
+    this.downloadSubject = new Subject();
   }
 
   openViewEventModal(event){
@@ -82,7 +86,9 @@ export class CalendarView extends React.Component{
           if(count <= 0){
             this.setState(Object.assign(this.state,{
               lectures: allLectures
-            }));
+            }),() => {
+              this.downloadSubject.next();
+            });
           }
         });
       }
@@ -90,10 +96,25 @@ export class CalendarView extends React.Component{
         this.setState(Object.assign(this.state,{
           lectures: allLectures
         }));
+
       }
     });
   }
-
+  exportICS(events){
+    let cal = new Component({
+      name: "VCALENDAR",
+      properties: [
+        new Property({ name: 'VERSION', value: 2 })
+      ]
+    });
+    
+    for(let event of events){
+      event.iceEvents.forEach((e) => {
+        cal = cal.pushComponent(e);
+      });
+    }
+    return cal.toString();
+  }
 
   render() {
     let viewLectureModal = <ViewLectureModal 
@@ -121,6 +142,13 @@ export class CalendarView extends React.Component{
             events={events}
             eventClick={(event) => {modalMap[event.constructor](event)}}
           />
+          <DownloadFile 
+            data={this.exportICS(events)} 
+            observer={this.downloadSubject}
+            show={true}
+          >
+            Download Export
+          </DownloadFile>
         </Col>
         <Col xs={12} md={10} mdOffset={1}>
           <AddEventModal />

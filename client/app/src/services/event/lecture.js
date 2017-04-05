@@ -1,8 +1,7 @@
 
 import moment from 'moment';
 
-import { VEVENT } from 'ics-js';
-
+import { Component, Property } from 'immutable-ics';
 
 
 export const jsonToLecture = (data) => {
@@ -122,6 +121,12 @@ export class Lecture{
   get end(){
     return this._endTime;
   }
+  get acronym(){
+    return this._acronym;
+  }
+  get course(){
+    return this._course;
+  }
   get desc(){
     return this._desc;
   }
@@ -144,9 +149,33 @@ export class Lecture{
         minute: this.end.get('minute'),
         second: this.end.get('second')
       });
-      let event = new VEVENT();
-      event.addProp("UID",`L-${this.id}-${this.course}-${this.acronym}@studynator.me`);
-      
+      let event = new Component({
+        name: "VEVENT",
+        properties: [
+          new Property({
+            name: "UID",
+            value: `L-${this.id}-${w}:${this._weekDay}-${this.course}-${this.acronym}@studynator.me`
+          }),
+          new Property({
+            name: "DTSTART",
+            value: s.toDate(),
+            parameters: { VALUE: 'DATE'}
+          }),
+          new Property({
+            name: "DTEND",
+            value: e.toDate(),
+            parameters: { VALUE: 'DATE'}
+          }),
+          new Property({
+            name: "SUMMARY",
+            value: this.title
+          }),
+          new Property({
+            name: "LOCATION",
+            value: (this.rooms[0] || {}).name
+          })
+        ]
+      });
       events.push(event);
     }
     return events;

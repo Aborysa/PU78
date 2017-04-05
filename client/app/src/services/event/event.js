@@ -2,7 +2,7 @@
 import moment from 'moment';
 
 
-
+import { Component, Property } from 'immutable-ics';
 
 export const jsonToEvent = (data) => {
   return new Event(
@@ -82,6 +82,38 @@ export class Event{
       endDate: this.end.format('YYYY/MM/DD HH:mm:ss')
     }
   }
+
+  get iceEvents(){
+    let event = new Component({
+      name: "VEVENT",
+      properties: [
+        new Property({
+          name: "UID",
+          value: `E-${this.id}@studynator.me`
+        }),
+        new Property({
+          name: "DTSTART",
+          value: this.start.toDate(),
+          parameters: { VALUE: 'DATE'}
+        }),
+        new Property({
+          name: "DTEND",
+          value: this.end.toDate(),
+          parameters: { VALUE: 'DATE'}
+        }),
+        new Property({
+          name: "SUMMARY",
+          value: this.title
+        }),
+        new Property({
+          name: "DESCRIPTION",
+          value: this.desc
+        })
+      ]
+    });
+    return [event];
+  }
+
   get patchEvent(){
     let sevent = this.serverEvent;
     sevent.id = this.id;
