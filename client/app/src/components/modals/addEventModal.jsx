@@ -80,7 +80,7 @@ export class AddEventModal extends React.Component{
     if(valDuration && valText && valStart && valEnd)
       return true;
     else
-      alert(text);
+      $.notify(text,{type: 'danger', z_index: 10000, placement: {align: "center"}});
   }
   render() {
 
