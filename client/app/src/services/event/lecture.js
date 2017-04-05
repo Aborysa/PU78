@@ -3,7 +3,6 @@ import moment from 'moment';
 
 import { Component, Property } from 'immutable-ics';
 
-
 export const jsonToLecture = (data) => {
   let weeks = [];
   data.weeks.split(",").forEach(v => {
@@ -112,6 +111,9 @@ export class Lecture{
   get id(){
     return this._id;
   }
+  get acronym(){
+    return this._acronym;
+  }
   get title(){
     return `${this._course}: ${this.desc}`;
   }
@@ -209,5 +211,5 @@ export class Lecture{
     }
     return events;
   }
-  
+
 }

@@ -4,6 +4,7 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 import Datetime from 'react-datetime';
+
 import { eventService,Event, lectureService, Lecture } from 'services/event';
 import { AddEventModal, ViewLectureModal, ViewEventModal } from 'components/modals';
 import { Calendar } from 'components/calendar.jsx';
@@ -12,6 +13,7 @@ import { courseService } from 'services/course';
 import { DownloadFile } from 'components/downloadFile.jsx';
 import { Component, Property } from 'immutable-ics';
 import { Subject } from 'rxjs';
+import { CheckoutButton } from 'components/checkoutButton.jsx';
 
 moment.locale('nb');
 
@@ -24,6 +26,38 @@ require('style!css!react-datetime/css/react-datetime.css');
 export class CalendarView extends React.Component{
   constructor(props) {
     super(props);
+    this.filters = {
+      ["FOR"]: {
+        name: "Forelesning",
+        test: (event) => {
+          if(event instanceof Lecture)
+            return event.acronym == "FOR";
+          return false;
+        }
+      },
+      ["FOR-OV"]: {
+        name: "Øvingsforelesning",
+        test: (event) => {
+          if(event instanceof Lecture)
+            return event.acronym == "F/Ø";
+          return false;
+        }
+      },
+      ["OV"]: {
+        name: "Øving",
+        test: (event) => {
+          if(event instanceof Lecture)
+            return event.acronym == "ØV" || event.acronym == "LAB";
+          return false;
+        }
+      },
+      ["PERSONAL"]: {
+        name: "Egne aktiviteter",
+        test: (event) => {
+          return event instanceof Event;
+        }
+      }
+    }
     this.state = {
       events: [],
       lectures: [],
@@ -32,7 +66,11 @@ export class CalendarView extends React.Component{
       },
       viewLectureModalProps: {
         show: false
-      }
+      },
+      filterState: {}
+    }
+    for(let i in this.filters){
+      this.state.filterState[i] = true;
     }
     this.downloadSubject = new Subject();
   }
@@ -65,6 +103,14 @@ export class CalendarView extends React.Component{
       viewEventModalProps: {
         show: false
       }
+    }));
+
+  }
+  handleListFilterChange(filter,state){
+    this.setState(Object.assign({}, this.state, {
+      filterState: Object.assign(this.state.filterState, {
+        [filter]: state
+      }),
     }));
   }
   componentDidMount(){
@@ -128,12 +174,34 @@ export class CalendarView extends React.Component{
       onClose={() => this.closeViewEventModal()} />;
 
     let events = this.state.events.concat(this.state.lectures);
-    
+   
     let modalMap = {
       [Event]: (...a) => this.openViewEventModal(...a),
       [Lecture]: (...a) => this.openViewLectureModal(...a)
     };
-    
+   
+    let listedEvents = events.slice().filter((event) => {
+      for(let i in this.filters){
+        let filter = this.filters[i];
+        if(filter.test(event)){
+          return this.state.filterState[i];
+        }
+      }
+      return true;
+    });
+    let buttons = [];
+    for(let i in this.filters){
+      let v = this.filters[i];
+      buttons.push(
+        <CheckoutButton
+          key={i}
+          onChange={(state) => this.handleListFilterChange(i,state)}
+          checked={this.state.filterState}
+        >
+          {v.name}
+        </CheckoutButton>
+      );
+    }
     return (
       <div>
         <Col xs={12} md={10} mdOffset={1}>
@@ -159,13 +227,11 @@ export class CalendarView extends React.Component{
           <hr className="sepCals"/>
         </Col>
         <Col xs={12} md={10} mdOffset={1}>
-          <ButtonGroup bsSize="small">
-            <Button>Forelesning</Button>
-            <Button>Øving</Button>
-            <Button>Annet</Button>
+          <ButtonGroup>
+            {buttons}
           </ButtonGroup>
           <ListCalendar
-            events={events}
+            events={listedEvents}
             toolbar={false}
             />
         </Col>
