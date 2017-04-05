@@ -5,7 +5,7 @@ export class DateTimePicker extends React.Component{
 		super(props);
 	}
 	componentDidMount(){
-		const { .picker } = this.refs;
+		const { picker } = this.refs;
 		$(picker).datetimepicker();
 	}
 	render(){
