@@ -2,6 +2,7 @@ require("style!css!assets/style/app.css");
 
 import 'fullcalendar';
 import 'moment';
+import 'bootstrap-datetime-picker';
 
 import React from "react";
 import { render } from "react-dom";
