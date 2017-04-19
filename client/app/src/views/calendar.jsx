@@ -4,14 +4,19 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 import Datetime from 'react-datetime';
-import { eventService, Event, lectureService, Lecture } from 'services/event';
-import { AddEventModal, ViewLectureModal } from 'components/modals';
+
+import { eventService,Event, lectureService, Lecture } from 'services/event';
+import { AddEventModal, ViewLectureModal, ViewEventModal } from 'components/modals';
 import { Calendar } from 'components/calendar.jsx';
 import { ListCalendar } from 'components/listCalendar.jsx';
 import { courseService } from 'services/course';
+import { DownloadFile } from 'components/downloadFile.jsx';
+import { Component, Property } from 'immutable-ics';
+import { Subject } from 'rxjs';
 import { CheckoutButton } from 'components/checkoutButton.jsx';
 
 moment.locale('nb');
+
 BigCalendar.momentLocalizer(moment);
 
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
@@ -56,7 +61,10 @@ export class CalendarView extends React.Component{
     this.state = {
       events: [],
       lectures: [],
-      viewModalProps: {
+      viewEventModalProps: {
+        show: false
+      },
+      viewLectureModalProps: {
         show: false
       },
       filterState: {}
@@ -64,19 +72,35 @@ export class CalendarView extends React.Component{
     for(let i in this.filters){
       this.state.filterState[i] = true;
     }
+    this.downloadSubject = new Subject();
   }
 
   openViewEventModal(event){
     this.setState(Object.assign(this.state,{
-      viewModalProps: {
+      viewEventModalProps: {
         show: true,
         event: event
       }
     }));
   }
-  closeViewModal(){
+  openViewLectureModal(lecture){
     this.setState(Object.assign(this.state,{
-      viewModalProps: {
+      viewLectureModalProps: {
+        show: true,
+        event: lecture
+      }
+    }));
+  }
+  closeViewLectureModal(){
+    this.setState(Object.assign(this.state,{
+      viewLectureModalProps: {
+        show: false
+      }
+    }));
+  }
+  closeViewEventModal(){
+    this.setState(Object.assign(this.state,{
+      viewEventModalProps: {
         show: false
       }
     }));
@@ -108,7 +132,9 @@ export class CalendarView extends React.Component{
           if(count <= 0){
             this.setState(Object.assign(this.state,{
               lectures: allLectures
-            }));
+            }),() => {
+              this.downloadSubject.next();
+            });
           }
         });
       }
@@ -116,14 +142,44 @@ export class CalendarView extends React.Component{
         this.setState(Object.assign(this.state,{
           lectures: allLectures
         }));
+
       }
     });
   }
-
+  exportICS(events){
+    let cal = new Component({
+      name: "VCALENDAR",
+      properties: [
+        new Property({ name: 'VERSION', value: 2 })
+      ]
+    });
+    
+    for(let event of events){
+      event.iceEvents.forEach((e) => {
+        cal = cal.pushComponent(e);
+      });
+    }
+    return cal.toString();
+  }
 
   render() {
-    let viewEventModal = <ViewLectureModal show={this.state.viewModalProps.show} event={this.state.viewModalProps.event}/>
+    let viewLectureModal = <ViewLectureModal 
+      show={this.state.viewLectureModalProps.show}
+      event={this.state.viewLectureModalProps.event} 
+      onClose={() => this.closeViewLectureModal()} />;
+    
+    let viewEventModal = <ViewEventModal 
+      show={this.state.viewEventModalProps.show}
+      event={this.state.viewEventModalProps.event}
+      onClose={() => this.closeViewEventModal()} />;
+
     let events = this.state.events.concat(this.state.lectures);
+   
+    let modalMap = {
+      [Event]: (...a) => this.openViewEventModal(...a),
+      [Lecture]: (...a) => this.openViewLectureModal(...a)
+    };
+   
     let listedEvents = events.slice().filter((event) => {
       for(let i in this.filters){
         let filter = this.filters[i];
@@ -152,12 +208,20 @@ export class CalendarView extends React.Component{
           <Calendar
             style={{height: '300px'}}
             events={events}
-            eventClick={(event) => this.openViewEventModal(event)}
+            eventClick={(event) => {modalMap[event.constructor](event)}}
           />
+          <DownloadFile 
+            data={this.exportICS(events)} 
+            observer={this.downloadSubject}
+            show={true}
+          >
+            Download Export
+          </DownloadFile>
         </Col>
         <Col xs={12} md={10} mdOffset={1}>
           <AddEventModal />
           {viewEventModal}
+          {viewLectureModal}
         </Col>
         <Col xs={12} md={10} mdOffset={1}>
           <hr className="sepCals"/>

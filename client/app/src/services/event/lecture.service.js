@@ -16,7 +16,6 @@ export class LectureServiceProvider{
   }
   getLectures(course){
     if(this._lectures[course]){
-      console.log("Cashed", this._lectures[course]);
       return Observable.of(this._lectures[course]);
     }
     return http.get(`${API_BASE}${API_LECTURES}${course}`).map(ret => {
@@ -24,7 +23,7 @@ export class LectureServiceProvider{
       for(let l of ret){
         let lecture = jsonToLecture(l);
         lectures.push(lecture);
-        this._lecturesbyid[lecture.id] = lecture; 
+        this._lecturesbyid[lecture.id] = lecture;
       }
       this._lectures[course] = lectures;
       return lectures;

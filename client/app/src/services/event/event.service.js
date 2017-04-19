@@ -44,7 +44,6 @@ export class EventServiceProvider{
   updateEvent(id,event){
     http.patch(`${API_BASE}${API_EVENTS}`,event.patchEvent).subscribe((res) => {
       $.notify("Endret", {type: 'success', z_index: 10000, placement: {align: "center"}});
-      console.log(res);
       this._eventCache[id] = event;
       let events = [];
       for(let i in this._eventCache){
@@ -70,6 +69,7 @@ export class EventServiceProvider{
 
   pushEvent(event){
     http.post(`${API_BASE}${API_EVENTS}`,event.serverEvent).subscribe((res) => {
+      event.id = res.id
       $.notify("Lagret", {type: 'success', z_index: 10000, placement: {align: "center"}});
       this.events.push(event);
       this.events = this.events.slice();

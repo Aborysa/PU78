@@ -50,6 +50,7 @@ export class AddEventModal extends React.Component{
     if (this.inputValidation(title, desc, start, end)){
       let event = new Event(-1,title, start, end, desc, true, "personal");
       eventService.pushEvent(event);
+      this.close();
     }else{
       console.log("failed");
     }
