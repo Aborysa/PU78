@@ -108,6 +108,12 @@ export class Lecture{
     this.rc = course_cache[course];
     this._rooms = rooms;
   }
+
+  set id(nid){
+    if(this.id <= 0){
+      this._id = nid;
+    }
+  }
   get id(){
     return this._id;
   }
