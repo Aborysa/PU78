@@ -47,8 +47,8 @@ test('Creates a Lecture from a json object', () => {
   expect(room.mazeId).toEqual(`${roomSource.buildingNr}-${roomSource.roomNr}`);
   //Test iceEvents
   let iceEvents = lecture.iceEvents;
-  expect(iceEvents.length).toBe(lecture.weeks.length);
+  expect(iceEvents).toHaveLength(lecture.weeks.length);
   //Test calendarEvents
   let calendarEvents = lecture.calendarEvents;
-  expect(calendarEvents.length).toBe(lecture.weeks.length);
+  expect(calendarEvents).toHaveLength(lecture.weeks.length);
 });
