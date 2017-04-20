@@ -129,11 +129,11 @@ export class Lecture{
   get end(){
     return this._endTime;
   }
-  get acronym(){
-    return this._acronym;
-  }
   get course(){
     return this._course;
+  }
+  get weeks(){
+    return this._weeks;
   }
   get desc(){
     return this._desc;
