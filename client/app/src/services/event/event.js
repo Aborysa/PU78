@@ -25,7 +25,7 @@ export const calendarToEvent = (o) => {
     o.end ? o.end.format('YYYY/MM/DD HH:mm:ss') : (o.allDay ? future24 : future2),
     o.desc,
     o.editable
-  )
+  );
 }
 
 export class Event{
