@@ -133,7 +133,7 @@ export class CalendarView extends React.Component{
             this.setState(Object.assign(this.state,{
               lectures: allLectures
             }),() => {
-              this.downloadSubject.next();
+              //this.downloadSubject.next();
             });
           }
         });
