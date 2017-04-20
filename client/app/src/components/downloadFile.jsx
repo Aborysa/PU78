@@ -9,7 +9,6 @@ export class DownloadFile extends React.Component{
   }
 
   componentWillReceiveProps(props){
-    console.log(props.observer);
     if(this.sub){
       this.sub.unsubscribe();
     }
