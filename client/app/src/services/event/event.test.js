@@ -30,6 +30,9 @@ test('Creates an Event from a json object', () => {
   expect(patchEvent.id).toBe(event.id);
   expect(patchEvent.desc).toBe(event.desc);
   //Test event from calendar
+});
+
+test('Creates an Event from a calendar json object',() => {
   let calendarSource = {
     id: -1,
     title: "Calendar Event",
@@ -39,7 +42,7 @@ test('Creates an Event from a json object', () => {
     allDay: true,
     editable: true
   }
-  event = calendarToEvent(calendarSource);
+  let event = calendarToEvent(calendarSource);
   expect(event).toBeInstanceOf(Event);
   expect(event.id).toBe(calendarSource.id);
   event.id = 2;

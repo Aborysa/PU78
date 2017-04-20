@@ -26,7 +26,6 @@ test('Creates a Lecture from a json object', () => {
     rooms: [roomSource]
   };
   let lecture = jsonToLecture(source);
-  let room = jsonToRoom(roomSource);
   expect(lecture.id).toBe(source.idLectures);
   expect(lecture.acronym).toBe(source.acronym);
   expect(lecture.title).toEqual(`${source.idCourse_fkLectures}: ${source.desc}`);
@@ -37,6 +36,25 @@ test('Creates a Lecture from a json object', () => {
   expect(lecture.weeks).toEqual([1,2,4,5,6]);
   lecture.id = 1;
   expect(lecture.id).toBe(1);
+  //Test iceEvents
+  let iceEvents = lecture.iceEvents;
+  expect(iceEvents).toHaveLength(lecture.weeks.length);
+  //Test calendarEvents
+  let calendarEvents = lecture.calendarEvents;
+  expect(calendarEvents).toHaveLength(lecture.weeks.length);
+});
+
+test('Creates a room from a json object',()=>{
+  let roomSource = {
+    "syllabusKey": "360CU1-101",
+    "roomName": "R1",
+    "floor": 14,
+    "roomNr": "CU1-101",
+    "buildingNr": "360",
+    "floorName": "Del C U1",
+    "type": "Auditorium felles"
+  };
+  let room = jsonToRoom(roomSource);
   expect(room.floor).toBe(roomSource.floorName);
   expect(room.floorNr).toBe(roomSource.floor);
   expect(room.buildingNr).toBe(roomSource.buildingNr);
@@ -45,13 +63,7 @@ test('Creates a Lecture from a json object', () => {
   expect(room.type).toBe(roomSource.type);
   expect(room.name).toEqual(`${roomSource.type}: ${roomSource.roomName}`);
   expect(room.mazeId).toEqual(`${roomSource.buildingNr}-${roomSource.roomNr}`);
-  //Test iceEvents
-  let iceEvents = lecture.iceEvents;
-  expect(iceEvents).toHaveLength(lecture.weeks.length);
-  //Test calendarEvents
-  let calendarEvents = lecture.calendarEvents;
-  expect(calendarEvents).toHaveLength(lecture.weeks.length);
-
+  
   //Test room without name
   let roomWithoutName = {
     "syllabusKey": "360CU1-101",
