@@ -51,4 +51,17 @@ test('Creates a Lecture from a json object', () => {
   //Test calendarEvents
   let calendarEvents = lecture.calendarEvents;
   expect(calendarEvents).toHaveLength(lecture.weeks.length);
+
+  //Test room without name
+  let roomWithoutName = {
+    "syllabusKey": "360CU1-101",
+    "floor": 14,
+    "roomNr": "CU1-101",
+    "buildingNr": "360",
+    "floorName": "Del C U1",
+    "type": "Auditorium felles"
+  };
+  room = jsonToRoom(roomWithoutName);
+  expect(room.type).toBe(roomWithoutName.type);  
+  expect(room.name).toEqual(`${room.type}`);
 });

@@ -31,7 +31,7 @@ test('Creates an Event from a json object', () => {
   expect(patchEvent.desc).toBe(event.desc);
   //Test event from calendar
   let calendarSource = {
-    id: 1,
+    id: -1,
     title: "Calendar Event",
     start: moment().day(0).week(1),
     end: moment().day(6).week(1),
@@ -42,6 +42,10 @@ test('Creates an Event from a json object', () => {
   event = calendarToEvent(calendarSource);
   expect(event).toBeInstanceOf(Event);
   expect(event.id).toBe(calendarSource.id);
+  event.id = 2;
+  expect(event.id).toBe(2);
+  event.id = 1;
+  expect(event.id).toBe(2);  
   expect(event.title).toBe(calendarSource.title);
   expect(event.desc).toBe(calendarSource.desc);
 });
