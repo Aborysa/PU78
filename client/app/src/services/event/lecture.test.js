@@ -25,6 +25,7 @@ test('Creates a Lecture from a json object', () => {
     weeks: "1-2,4-6",
     rooms: [roomSource]
   };
+  let room = jsonToRoom(roomSource);
   let lecture = jsonToLecture(source);
   expect(lecture.id).toBe(source.idLectures);
   expect(lecture.acronym).toBe(source.acronym);
