@@ -12,5 +12,7 @@
 - git clone git@github.com:Aborysa/PU78.git
 - cd PU78
 - npm install
+- cp config-example.json config.json
+- fill in all fields in config.json
 - npm start
 
