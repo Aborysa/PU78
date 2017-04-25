@@ -20,7 +20,7 @@ export class UserServiceProvider{
       if(data && data.data){
         u = new User(data.token.id_token,"",data.data.name);
       }
-      if( ((u && this.puser) && u.id != this.puser.id) || u != this.puser){
+      if( ((u && this.puser) && u.id != this.puser.id) || u !== this.puser || (this.puser === null && u === null)){
         if(!u && this.puser){
           $.notify("Du er ikke lengre logget in!",{delay:2000,type:'info',z_index:10000, placement: {align: "center"}});
         }
