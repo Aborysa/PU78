@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
 //import { DateTimePicker} from 'components/datetimepicker.jsx';
 import { eventService,Event } from 'services/event';
-import { Datetime } from 'react-datetime';
+import Datetime from 'react-datetime';
 
 export class AddEventModal extends React.Component{
   constructor(props){
@@ -47,13 +47,10 @@ export class AddEventModal extends React.Component{
     let desc = ReactDOM.findDOMNode(this.refs.desc).value;
     let start = this.pstart;
     let end = this.pend;
-    console.log(start, " START ", end, " END ");
     if (this.inputValidation(title, desc, start, end)){
       let event = new Event(-1,title, start, end, desc, true, "personal");
       eventService.pushEvent(event);
       this.close();
-    }else{
-      console.log("failed");
     }
 
   }
@@ -86,7 +83,6 @@ export class AddEventModal extends React.Component{
       $.notify(text,{type: 'danger', z_index: 10000, placement: {align: "center"}});
   }
   render() {
-
     return (
       <div>
         <Button bsStyle="primary" bsSize="small" onClick={() => this.open()} className="pull-right">Legg til en hendelse</Button>
