@@ -2,7 +2,10 @@ const express = require("express");
 const eventRouter = express.Router({mergeParams:true});
 const database = require("../database.js");
 const clientService = require("../services/database/client.service.js").clientService;
-let userError = require("../utils.js").userError;
+const utils = require("../utils.js");
+const userError = utils.userError;
+const internalError = utils.internalError;
+
 
 eventRouter.get('/events', (req, res) => {
   if(req.user){
@@ -67,7 +70,10 @@ eventRouter.patch('/events', (req, res) => {
     let end = req.body.endDate.slice(0,19).replace("T"," ");
     clientService.getClient(database).subscribe((conn) => {
       conn.query(`UPDATE Events SET eventTitle='${title}', eventDesc='${description}', eventType='${type}', eventStart='${start}', eventEnd='${end}', idUsersFeide_fkEvents='${tokenID}' WHERE idEvents='${eventID}';`,(_) => {
-        res.json({status:"ok"});  
+        if(!_)
+          res.json({status:"ok"});  
+        else
+          internalError(res);
       });
     });
   }else{

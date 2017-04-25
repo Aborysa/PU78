@@ -4,13 +4,9 @@ const database = require("../database.js");
 
 const clientService = require("../services/database/client.service.js").clientService;
 
-let defaultError = (res) => {
-  res.status(400);
-  res.json({
-    status: "error",
-    message: "User not logged in!"
-  });
-}
+const utils = require("../utils.js");
+const userError = utils.userError;
+const internalError = utils.internalError;
 
 userCoursesRouter.get('/usercourses', (req,res) => {
   if(req.user){
@@ -32,7 +28,7 @@ userCoursesRouter.get('/usercourses', (req,res) => {
       );
     });
   }else{
-    defaultError(res);
+    userError(res);
   }
 });
 
@@ -43,23 +39,33 @@ userCoursesRouter.post('/usercourses', (req, res) => {
     let role = req.body.role;
     clientService.getClient(database).subscribe((conn) => {
       conn.query(`INSERT INTO CourseUsers(idUser_fkCourseUsers, idCourse_fkCourseUsers, courseUserRole) VALUES('${tokenID}', '${courseID}', '${role}');`,(_) => {
-      })
+        if(!_)
+          res.json({status:"ok"});
+        else
+          internalError(res);
+      });
     });
-    res.json({status:"ok"});
   }else{
-    defaultError(res);
+    userError(res);
   }
 });
 
 userCoursesRouter.delete('/usercourses', (req, res) => {
-  let tokenID = req.user.data.sub;
-  let courseID = req.body.id;
-  clientService.getClient(database).subscribe((conn) => {
-    conn.query(`DELETE FROM CourseUsers WHERE idUser_fkCourseUsers='${tokenID}' AND idCourse_fkCourseUsers='${courseID}';`,(_) => {
-      console.log(_);
-    })
-  });
-  res.json({status:"ok"})
-})
+  if(req.user){
+    let tokenID = req.user.data.sub;
+    let courseID = req.body.id;
+    clientService.getClient(database).subscribe((conn) => {
+      conn.query(`DELETE FROM CourseUsers WHERE idUser_fkCourseUsers='${tokenID}' AND idCourse_fkCourseUsers='${courseID}';`,(_) => {
+        if(!_)
+          res.json({status:"ok"})
+        else
+          internalError(res);
+        console.log(_);
+      })
+    });
+  }else{
+    userError(res);
+  }
+});
 
 module.exports = userCoursesRouter;

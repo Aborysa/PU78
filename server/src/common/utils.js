@@ -1,4 +1,4 @@
-let interalError = (res) => {
+let internalError = (res) => {
   res.status(500);
   res.json({
     status: "error",
@@ -16,5 +16,5 @@ let userError = (res) => {
 
 module.exports = {
   userError = userError,
-  interalError = interalError
+  internalError = internalError
 }

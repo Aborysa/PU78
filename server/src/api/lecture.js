@@ -6,7 +6,7 @@ const clientService = require("../services/database/client.service.js").clientSe
 
 const utils = require("../utils.js");
 const userError = utils.userError;
-const interalError = utils.interalError;
+const internalError = utils.internalError;
 
 lectureRouter.get('/lectures/:code', (req,res) => {
   let course = req.params.code;
@@ -41,7 +41,7 @@ lectureRouter.get('/lectures/:code', (req,res) => {
             res.json(lectures);
           }
         } else {
-          interalError(res);
+          internalError(res);
           res.json([]);
         };
       }
@@ -59,11 +59,7 @@ lectureRouter.get('/lectures', (req,res) => {
           if (!_) {
             res.json(rows);
           } else {
-            res.status(500);
-            res.json({
-              status: "error",
-              message: "Something went wrong!"
-            });
+            internalError(res);
           }
         }
       );
