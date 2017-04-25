@@ -4,7 +4,9 @@ const database = require("../database.js");
 
 const clientService = require("../services/database/client.service.js").clientService;
 
-
+const utils = require("../utils.js");
+const userError = utils.userError;
+const interalError = utils.interalError;
 
 lectureRouter.get('/lectures/:code', (req,res) => {
   let course = req.params.code;
@@ -39,7 +41,7 @@ lectureRouter.get('/lectures/:code', (req,res) => {
             res.json(lectures);
           }
         } else {
-          console.log("Error",_);
+          interalError(res);
           res.json([]);
         };
       }
@@ -48,20 +50,27 @@ lectureRouter.get('/lectures/:code', (req,res) => {
 });
 
 lectureRouter.get('/lectures', (req,res) => {
-  let tokenID = req.user.data.sub;
-  clientService.getClient(database).subscribe((conn) => {
-    conn.query(
-      `select Lectures.*, GROUP_CONCAT(startWeek,"-",endWeek) AS 'weeks' from Lectures join CourseUsers on idCourse_fkCourseUsers=idCourse_fkLectures join LectureWeeks on idLectures=idLecture_fkLectureWeeks where idUser_fkCourseUsers = '${tokenID}' group by idLectures;`,
-      (_,rows) => {
-        if (!_) {
-          res.json(rows);
-        } else {
-          console.log(_);
-          res.json([1234]);
-        };
-      }
-    );
-  });
+  if(req.user){
+    let tokenID = req.user.data.sub;
+    clientService.getClient(database).subscribe((conn) => {
+      conn.query(
+        `select Lectures.*, GROUP_CONCAT(startWeek,"-",endWeek) AS 'weeks' from Lectures join CourseUsers on idCourse_fkCourseUsers=idCourse_fkLectures join LectureWeeks on idLectures=idLecture_fkLectureWeeks where idUser_fkCourseUsers = '${tokenID}' group by idLectures;`,
+        (_,rows) => {
+          if (!_) {
+            res.json(rows);
+          } else {
+            res.status(500);
+            res.json({
+              status: "error",
+              message: "Something went wrong!"
+            });
+          }
+        }
+      );
+    });
+  }else{
+    userError(res);
+  }
 });
 
 module.exports = lectureRouter;
