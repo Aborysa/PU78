@@ -22,7 +22,7 @@ BigCalendar.momentLocalizer(moment);
 
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
 
-//require('style!css!bootstrap-datetime-picker/css/bootstrap-datetimepicker.css');
+require('style!css!react-datetime/css/react-datetime.css');
 
 export class CalendarView extends React.Component{
   constructor(props) {
