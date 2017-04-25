@@ -15,13 +15,14 @@ import { Component, Property } from 'immutable-ics';
 import { Subject } from 'rxjs';
 import { CheckoutButton } from 'components/checkoutButton.jsx';
 
+
 moment.locale('nb');
 
 BigCalendar.momentLocalizer(moment);
 
 var starttime = new Date(0, 0, 0, 8, 0, 0, 0);
 
-require('style!css!react-datetime/css/react-datetime.css');
+//require('style!css!bootstrap-datetime-picker/css/bootstrap-datetimepicker.css');
 
 export class CalendarView extends React.Component{
   constructor(props) {

@@ -49,6 +49,8 @@ var config = {
       moment: "moment",
       "window.moment": "moment",
       fullcalendar: "fullcalendar",
+      datepicker: "bootstrap-datepicker",
+      "window.datepicker": "bootstrap-datepicker",
       "window.fullcalendar": "fullcalendar"
     })
   ]
