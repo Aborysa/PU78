@@ -52,3 +52,6 @@ client/app/src/common/constants.js
 
 # Bundle and style
 client/app/dist/
+
+#DS_Store
+.DS_Store

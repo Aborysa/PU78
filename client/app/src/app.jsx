@@ -2,6 +2,8 @@ require("style!css!assets/style/app.css");
 
 import 'fullcalendar';
 import 'moment';
+import 'react-bootstrap-datetimepicker';
+
 import 'bootstrap-notify';
 
 import React from "react";
