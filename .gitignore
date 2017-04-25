@@ -45,6 +45,7 @@ jspm_packages
 
 # Jetbrains
 .idea/
+.editorconfig
 
 # Config and secrets
 client/app/src/common/constants.js

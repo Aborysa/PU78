@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import {Col, ButtonGroup, Button, Popover, Tooltip, Modal, OverlayTrigger, Form, FormGroup, ControlLabel, FormControl, Checkbox} from 'react-bootstrap';
-import { DateTimePicker} from 'components/datetimepicker.jsx';
+//import { DateTimePicker} from 'components/datetimepicker.jsx';
 import { eventService,Event } from 'services/event';
-
+import { Datetime } from 'react-datetime';
 
 export class AddEventModal extends React.Component{
   constructor(props){
@@ -51,6 +51,7 @@ export class AddEventModal extends React.Component{
     if (this.inputValidation(title, desc, start, end)){
       let event = new Event(-1,title, start, end, desc, true, "personal");
       eventService.pushEvent(event);
+      this.close();
     }else{
       console.log("failed");
     }
@@ -82,7 +83,7 @@ export class AddEventModal extends React.Component{
     if(valDuration && valText && valStart && valEnd)
       return true;
     else
-      alert(text);
+      $.notify(text,{type: 'danger', z_index: 10000, placement: {align: "center"}});
   }
   render() {
 
@@ -117,7 +118,7 @@ export class AddEventModal extends React.Component{
                   Starttid
                 </Col>
                 <Col sm={4}>
-                  <DateTimePicker onChange={(v) => this.start = v} ref="start" required={true}/>
+                  <Datetime onChange={(v) => this.start = v} ref="start" required={true}/>
                 </Col>
               </FormGroup>
               <FormGroup controlId="formHorizontalEndDate">
@@ -125,7 +126,7 @@ export class AddEventModal extends React.Component{
                   Sluttid
                 </Col>
                 <Col sm={4}>
-                  <DateTimePicker onChange={(v) => this.start = v} ref="end" required={true}/>
+                  <Datetime onChange={(v) => this.start = v} ref="end" required={true}/>
                 </Col>
               </FormGroup>
             </Form>

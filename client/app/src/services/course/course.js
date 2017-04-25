@@ -7,8 +7,6 @@ export const jsonToCourse = (data) => {
     data.idCourse,
     data.name
   );
-  console.log(data, "to", c);
-  
   return c;
 }
 

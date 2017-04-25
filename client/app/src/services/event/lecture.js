@@ -1,6 +1,7 @@
 
 import moment from 'moment';
 
+import { Component, Property } from 'immutable-ics';
 
 export const jsonToLecture = (data) => {
   let weeks = [];
@@ -107,9 +108,10 @@ export class Lecture{
     this.rc = course_cache[course];
     this._rooms = rooms;
   }
+
   set id(nid){
     if(this.id <= 0){
-      this.id = nid;
+      this._id = nid;
     }
   }
   get id(){
@@ -127,6 +129,12 @@ export class Lecture{
   get end(){
     return this._endTime;
   }
+  get course(){
+    return this._course;
+  }
+  get weeks(){
+    return this._weeks;
+  }
   get desc(){
     return this._desc;
   }
@@ -135,6 +143,50 @@ export class Lecture{
   }
   get rooms(){
     return this._rooms;
+  }
+  get iceEvents(){
+    let events = [];
+    for(let w of this._weeks){
+      let s = moment().day(this._weekDay).week(w).set({
+        hour: this.start.get('hour'),
+        minute: this.start.get('minute'),
+        second: this.start.get('second')
+      });
+      let e = moment().day(this._weekDay).week(w).set({
+        hour: this.end.get('hour'),
+        minute: this.end.get('minute'),
+        second: this.end.get('second')
+      });
+      let event = new Component({
+        name: "VEVENT",
+        properties: [
+          new Property({
+            name: "UID",
+            value: `L-${this.id}-${w}:${this._weekDay}-${this.course}-${this.acronym}@studynator.me`
+          }),
+          new Property({
+            name: "DTSTART",
+            value: s.toDate(),
+            parameters: { VALUE: 'DATE'}
+          }),
+          new Property({
+            name: "DTEND",
+            value: e.toDate(),
+            parameters: { VALUE: 'DATE'}
+          }),
+          new Property({
+            name: "SUMMARY",
+            value: this.title
+          }),
+          new Property({
+            name: "LOCATION",
+            value: (this.rooms[0] || {}).name
+          })
+        ]
+      });
+      events.push(event);
+    }
+    return events;
   }
   get calendarEvents(){
     let events = [];
