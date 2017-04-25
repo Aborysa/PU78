@@ -4,6 +4,8 @@ const database = require("../database.js");
 
 const clientService = require("../services/database/client.service.js").clientService;
 
+const utils = require("../common/utils.js");
+const internalError = utils.internalError;
 
 courseRouter.get('/course', (req,res) => {
   let search = req.query.q;
@@ -14,8 +16,7 @@ courseRouter.get('/course', (req,res) => {
         if (!_) {
           res.json(rows);
         } else {
-          console.log(_);
-          res.json([1234]);
+          internalError(res);
         };
       }
     );

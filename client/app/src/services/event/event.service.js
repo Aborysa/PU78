@@ -50,6 +50,8 @@ export class EventServiceProvider{
         events.push(this._eventCache[i]);
       }
       this.events = events;
+    },() => {
+      $.notify("Noe gikk galt! Hendelsen ble ikke endret!",{delay:3000,type:'warning',z_index:10000, placement: {align: "center"}});
     });
   }
 
@@ -64,7 +66,9 @@ export class EventServiceProvider{
         events.push(this._eventCache[i]);
       }
       this.events = events;
-    })
+    },() => {
+      $.notify("Noe gikk galt! Hendelsen ble ikke slettet",{delay:3000,type:'warning',z_index:10000, placement: {align: "center"}});
+    });
   }
 
   pushEvent(event){
@@ -74,6 +78,8 @@ export class EventServiceProvider{
       this.events.push(event);
       this.events = this.events.slice();
       this._eventCache[event.id] = event;
+    },() => {
+      $.notify("Noe gikk galt! Hendelsen ble ikke opprettet",{delay:3000,type:'warning',z_index:10000, placement: {align: "center"}});
     });
   }
 }

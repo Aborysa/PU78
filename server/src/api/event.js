@@ -2,7 +2,7 @@ const express = require("express");
 const eventRouter = express.Router({mergeParams:true});
 const database = require("../database.js");
 const clientService = require("../services/database/client.service.js").clientService;
-const utils = require("../utils.js");
+const utils = require("../common/utils.js");
 const userError = utils.userError;
 const internalError = utils.internalError;
 

@@ -15,6 +15,6 @@ let userError = (res) => {
 }
 
 module.exports = {
-  userError = userError,
-  internalError = internalError
+  userError,
+  internalError
 }

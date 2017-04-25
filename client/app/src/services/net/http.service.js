@@ -11,6 +11,7 @@ export class HttpServiceProvider {
   constructor() {
     // Request queue used for 503 and 401 responses
     this.requestQueue = [];
+    this.errorSubjects = {};
     this.auth_token = '';
     this.waitingForToken = false;
     this.requestSubject = new Subject();
@@ -77,7 +78,6 @@ export class HttpServiceProvider {
   }
 
   handleResponse(r, req) {
-    console.log("Handling response");
     /* TODO: handle 503(service unavailable) responses
       adjust delay up when a 503 responses happens
       and retry
@@ -92,9 +92,18 @@ export class HttpServiceProvider {
         this.renewToken();
         return resolver.asObservable();
       }
+      if(this.errorSubjects[r.status]){
+        this.errorSubjects[r.status].next(r);
+      }
       return Observable.throw(r);
     }
     return r.json();
+  }
+  onError(errorCode){
+    if(!this.errorSubjects[errorCode]){
+      this.errorSubjects[errorCode] = new Subject();
+    }
+    return this.errorSubjects[errorCode];
   }
   /** Performs a general request
    * @param {Request} url
