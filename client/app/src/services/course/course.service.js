@@ -32,7 +32,6 @@ export class CourseServiceProvider{
   }
 
   refresh(){
-    console.log("Refresh courses");
     http.get(`${API_BASE}${API_USER_COURSES}`)
       .subscribe(r => {
         let ret = [];
@@ -55,6 +54,9 @@ export class CourseServiceProvider{
       let courses = this.userCoursesList.slice();
       courses.push(course);
       this.userCourses = courses;
+      $.notify("Fag registrert",{delay:1000,type:'success',z_index:10000, placement: {align: "center"}});  
+    },() => {
+      $.notify("Noe gikk galt! Fag ble ikke registrert",{delay:3000,type:'warning',z_index:10000, placement: {align: "center"}});        
     });
   }
 
@@ -63,6 +65,8 @@ export class CourseServiceProvider{
       id: course.id
     }).subscribe((ret) => {
       this.userCourses = this.userCoursesList.slice().filter(e => e.id != course.id);
+    },() => {
+      $.notify("Noe gikk galt! Fag ble ikke slettet",{delay:3000,type:'warning',z_index:10000, placement: {align: "center"}});        
     });
 
   }
