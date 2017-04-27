@@ -67,7 +67,7 @@ feideAPI.get('/user', (req, res) => {
 feideAPI.get('/logout',(req,res) => {
   req.logout();
   req.session.destroy(function (err) {
-    res.redirect('/');
+    res.redirect('https://auth.dataporten.no/logout');
   });
 });
 
